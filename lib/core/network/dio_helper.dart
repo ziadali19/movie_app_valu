@@ -14,34 +14,14 @@ class DioHelper {
   DioHelper._internal() {
     dio = Dio(
       BaseOptions(
-        contentType: Headers.jsonContentType,
+        headers: {'Content-Type': 'application/json'},
+
         baseUrl: AppConstants.baseURL,
         receiveDataWhenStatusError: true,
       ),
     );
 
     dio.interceptors.addAll([
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          if (AppConstants.userToken != null) {
-            options.headers.addAll({
-              "Authorization": "Bearer ${AppConstants.userToken}",
-            });
-          }
-          return handler.next(options);
-        },
-        onError: (e, handler) async {
-          // if (e.response?.statusCode == 401) {
-          //   CacheHelper.casheHelper.removeData('userToken').then((value) {
-          //     AppConstants.userToken = null;
-          //     Navigator.of(AppConstants.navKey.currentContext!)
-          //         .pushReplacementNamed(Routes.login);
-          //   });
-          // }
-
-          return handler.next(e);
-        },
-      ),
       LogInterceptor(
         requestHeader: true,
         responseHeader: false,
