@@ -6,6 +6,9 @@ import 'package:movie_app_valu/core/helpers/show_toast.dart';
 import 'package:movie_app_valu/core/theming/colors.dart';
 import 'package:movie_app_valu/core/theming/styles.dart';
 import 'package:movie_app_valu/core/helpers/spacing.dart';
+import 'package:movie_app_valu/core/widgets/app_error_view.dart';
+import 'package:movie_app_valu/core/widgets/app_loading.dart';
+import 'package:movie_app_valu/core/widgets/elevated_button_without_icon.dart';
 
 import '../../controller/bloc/movies_bloc.dart';
 import '../../controller/bloc/movies_event.dart';
@@ -57,9 +60,9 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
       backgroundColor: ColorsManager.background,
       appBar: AppBar(title: Text('Popular Movies')),
       body: BlocListener<MoviesBloc, MoviesState>(
-        listenWhen: (previous, current) =>
-            previous.status != current.status ||
-            previous.errorMessage != current.errorMessage,
+        // listenWhen: (previous, current) =>
+        //     previous.status != current.status ||
+        //     previous.errorMessage != current.errorMessage,
         listener: (context, state) {
           if (state.hasError) {
             // Show error only if no data is available
@@ -92,59 +95,13 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
   }
 
   Widget _buildLoadingState() {
-    return const Center(
-      child: CupertinoActivityIndicator(
-        color: ColorsManager.primary,
-        radius: 20,
-      ),
-    );
+    return const AppLoading();
   }
 
   Widget _buildErrorState(String? errorMessage) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(24.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64.sp,
-              color: ColorsManager.primary,
-            ),
-            verticalSpace(16.h),
-            Text(
-              'Oops! Something went wrong',
-              style: TextStyles.font18Black600.copyWith(
-                color: ColorsManager.textPrimary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            verticalSpace(8.h),
-            Text(
-              errorMessage ?? 'Failed to load movies',
-              style: TextStyles.font14Black400.copyWith(
-                color: ColorsManager.textSecondary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            verticalSpace(24.h),
-            ElevatedButton(
-              onPressed: () {
-                context.read<MoviesBloc>().add(RetryLoadingMoviesEvent());
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorsManager.primary,
-                padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-              ),
-              child: Text('Try Again', style: TextStyles.font16White500),
-            ),
-          ],
-        ),
-      ),
+    return AppErrorView(
+      message: errorMessage ?? 'Failed to load movies',
+      onRetry: () => context.read<MoviesBloc>().add(RetryLoadingMoviesEvent()),
     );
   }
 
@@ -263,26 +220,17 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
                     child: Padding(
                       padding: EdgeInsets.all(16.h),
                       child: Center(
-                        child: ElevatedButton(
+                        child: CustomElevatedButtonWithOutIcon(
+                          verticalPadding: 12.h,
+                          horizontalPadding: 24.w,
+                          borderRadius: 8.r,
+
+                          buttonText: 'Load More Movies',
                           onPressed: () {
                             context.read<MoviesBloc>().add(
                               LoadMoreMoviesEvent(),
                             );
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: ColorsManager.primary,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 24.w,
-                              vertical: 12.h,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                          ),
-                          child: Text(
-                            'Load More Movies',
-                            style: TextStyles.font14White600,
-                          ),
                         ),
                       ),
                     ),
