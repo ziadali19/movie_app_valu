@@ -112,4 +112,10 @@ class TextStyles {
     color: Colors.black,
     fontWeight: FontWeight.w600,
   );
+
+  static TextStyle font10Primary400 = TextStyle(
+    fontSize: 10.sp,
+    color: ColorsManager.primary,
+    fontWeight: FontWeight.w400,
+  );
 }

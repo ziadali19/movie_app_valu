@@ -21,7 +21,7 @@ class MovieAppValu extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           navigatorKey: AppConstants.navKey,
-          initialRoute: Routes.moviesList,
+          initialRoute: Routes.mainNavigation,
           onGenerateRoute: (settings) {
             return AppRouter.onGenerateRoute(settings);
           },
