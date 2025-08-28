@@ -342,11 +342,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.0.0"
-  flutter_localizations:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -363,14 +358,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.9.3"
-  flutter_styled_toast:
-    dependency: "direct main"
-    description:
-      name: flutter_styled_toast
-      sha256: e667f13a665820eb0fa8506547e47eacbcddf1948d6d3036cfd3b089bd4b0516
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.2.1"
   flutter_svg:
     dependency: "direct main"
     description:
