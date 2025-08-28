@@ -1,0 +1,52 @@
+name: movie_app_valu
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc:
+  flutter_screenutil:
+  flutter_svg:
+  bloc:
+  get_it:
+  intl:
+  flutter_native_splash:
+  dio:
+  flutter_styled_toast:
+  cached_network_image:
+  shimmer:
+  shared_preferences:
+  dartz:
+  hive:
+  hive_flutter:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  bloc_test:
+  mockito:
+  build_runner:
+  hive_generator:
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/svgs/
+
+  fonts:
+    - family: IBMPlexSans
+      fonts:
+        - asset: assets/fonts/IBMPlexSans-Bold.ttf
+        - asset: assets/fonts/IBMPlexSans-ExtraLight.ttf
+        - asset: assets/fonts/IBMPlexSans-Light.ttf
+        - asset: assets/fonts/IBMPlexSans-SemiBold.ttf
+        - asset: assets/fonts/IBMPlexSans-Medium.ttf
+        - asset: assets/fonts/IBMPlexSans-Regular.ttf
+        - asset: assets/fonts/IBMPlexSans-Thin.ttf

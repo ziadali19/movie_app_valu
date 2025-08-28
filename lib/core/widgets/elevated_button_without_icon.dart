@@ -1,0 +1,71 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../theming/colors.dart';
+import '../theming/styles.dart';
+
+class CustomElevatedButtonWithOutIcon extends StatelessWidget {
+  final double? borderRadius;
+  final Color? backgroundColor;
+  final double? horizontalPadding;
+  final double? verticalPadding;
+  final double? buttonWidth;
+  final double? buttonHeight;
+  final String buttonText;
+
+  final VoidCallback onPressed;
+  const CustomElevatedButtonWithOutIcon(
+      {super.key,
+      this.borderRadius,
+      this.backgroundColor,
+      this.horizontalPadding,
+      this.verticalPadding,
+      this.buttonHeight,
+      this.buttonWidth,
+      required this.buttonText,
+      required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.25),
+          spreadRadius: -5,
+          blurRadius: 4,
+          offset: Offset(0.w, 4.h),
+        )
+      ]),
+      child: ElevatedButton(
+        style: ButtonStyle(
+          elevation: const WidgetStatePropertyAll(0),
+          overlayColor:
+              const WidgetStatePropertyAll(Color.fromARGB(255, 226, 91, 93)),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius ?? 6.r),
+            ),
+          ),
+          backgroundColor: WidgetStatePropertyAll(
+            backgroundColor ?? ColorsManager.primary,
+          ),
+          padding: WidgetStateProperty.all<EdgeInsets>(
+            EdgeInsets.symmetric(
+              horizontal: horizontalPadding ?? 18.w,
+              vertical: verticalPadding ?? 8.h,
+            ),
+          ),
+          fixedSize: WidgetStateProperty.all(
+            Size(buttonWidth ?? double.infinity, buttonHeight ?? 50.h),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          buttonText,
+          style: TextStyles.font16White500,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
+  }
+}
