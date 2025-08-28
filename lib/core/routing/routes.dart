@@ -1,4 +1,4 @@
 class Routes {
-  static const landing = 'landing';
+  static const mainNavigation = '/';
   static const moviesList = '/movies';
 }
