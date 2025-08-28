@@ -1,16 +1,14 @@
 class ApiErrorModel {
   final String? message;
-  final int? code;
-  ApiErrorModel({this.code, required this.message});
+  final bool? status;
+  ApiErrorModel({this.status, required this.message});
 
   factory ApiErrorModel.fromJson(Map<String, dynamic> map) {
     return ApiErrorModel(
-      message: map['message'] != null
-          ? map['message'] as String
-          : map['error'] != null
-              ? map['error'] as String
-              : null,
-      code: map['code'] != null ? map['code'] as int : null,
+      message: map['status_message'] != null
+          ? map['status_message'] as String
+          : null,
+      status: map['success'] != null ? map['success'] as bool : null,
     );
   }
 }

@@ -1,7 +1,6 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
 import 'package:dio/dio.dart';
-import 'package:movie_app_valu/core/network/exceptions.dart';
 
 import 'failure_model.dart';
 
@@ -41,10 +40,8 @@ class ErrorHandler {
         default:
           return ApiErrorModel(message: "Something went wrong");
       }
-    } else if (error is FailException) {
-      return ApiErrorModel(message: error.exception.toString());
     } else {
-      return ApiErrorModel(message: "Unexpected error occurred");
+      return ApiErrorModel(message: error.toString());
     }
   }
 }

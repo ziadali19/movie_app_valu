@@ -22,6 +22,15 @@ class DioHelper {
     );
 
     dio.interceptors.addAll([
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          options.headers.addAll({
+            'language': 'en-US',
+            'Authorization': 'Bearer ${AppConstants.userToken}',
+          });
+          return handler.next(options);
+        },
+      ),
       LogInterceptor(
         requestHeader: true,
         responseHeader: false,
@@ -40,11 +49,8 @@ class DioHelper {
   }) async {
     Response res = await dio.post(
       path,
-      data: body ?? {},
+      data: body,
       queryParameters: queryParameters ?? {},
-      options: Options(
-        headers: token == null ? {} : {'Authorization': 'Bearer $token'},
-      ),
     );
     return res;
   }
@@ -57,11 +63,8 @@ class DioHelper {
   }) async {
     Response res = await dio.put(
       path,
-      data: body ?? {},
+      data: body,
       queryParameters: queryParameters ?? {},
-      options: Options(
-        headers: token == null ? {} : {'Authorization': 'Bearer $token'},
-      ),
     );
     return res;
   }
@@ -74,11 +77,8 @@ class DioHelper {
   }) async {
     Response res = await dio.patch(
       path,
-      data: body ?? {},
+      data: body,
       queryParameters: queryParameters ?? {},
-      options: Options(
-        headers: token == null ? {} : {'Authorization': 'Bearer $token'},
-      ),
     );
     return res;
   }
@@ -91,11 +91,8 @@ class DioHelper {
   }) async {
     Response res = await dio.delete(
       path,
-      data: body ?? {},
+      data: body,
       queryParameters: queryParameters ?? {},
-      options: Options(
-        headers: token == null ? {} : {'Authorization': 'Bearer $token'},
-      ),
     );
     return res;
   }
@@ -108,11 +105,8 @@ class DioHelper {
   }) async {
     Response res = await dio.get(
       path,
-      data: body ?? {},
+      data: body,
       queryParameters: queryParameters ?? {},
-      options: Options(
-        headers: token == null ? {} : {'Authorization': 'Bearer $token'},
-      ),
     );
     return res;
   }

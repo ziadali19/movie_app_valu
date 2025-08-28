@@ -5,6 +5,7 @@ import 'package:movie_app_valu/core/theming/themes.dart';
 import 'package:movie_app_valu/core/utils/constants.dart';
 
 import 'core/routing/app_router.dart';
+import 'core/routing/routes.dart';
 
 class MovieAppValu extends StatelessWidget {
   const MovieAppValu({super.key});
@@ -20,7 +21,7 @@ class MovieAppValu extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           navigatorKey: AppConstants.navKey,
-          home: const Scaffold(body: Center(child: Text('Hello World!'))),
+          initialRoute: Routes.moviesList,
           onGenerateRoute: (settings) {
             return AppRouter.onGenerateRoute(settings);
           },
@@ -34,7 +35,6 @@ class MovieAppValu extends StatelessWidget {
               child: child!,
             );
           },
-
           debugShowCheckedModeBanner: false,
           theme: Themes.instance.darkTheme(context),
         );

@@ -17,7 +17,6 @@ dependencies:
   intl:
   flutter_native_splash:
   dio:
-  flutter_styled_toast:
   cached_network_image:
   shimmer:
   shared_preferences:
