@@ -36,7 +36,7 @@ class MovieAppValu extends StatelessWidget {
           },
 
           debugShowCheckedModeBanner: false,
-          theme: Themes.instance.lightTheme(context),
+          theme: Themes.instance.darkTheme(context),
         );
       },
     );
