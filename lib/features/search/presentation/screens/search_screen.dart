@@ -12,6 +12,7 @@ import '../../../../core/widgets/app_error_view.dart';
 import '../../../../core/widgets/app_loading.dart';
 import '../../../../core/widgets/elevated_button_without_icon.dart';
 import '../../../../core/widgets/error_header.dart';
+import '../../../../core/widgets/search_bar.dart';
 import '../../../movies/presentation/components/movie_card.dart';
 import '../../controller/bloc/search_bloc.dart';
 import '../../controller/bloc/search_event.dart';
@@ -55,105 +56,33 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Search Movies')),
       backgroundColor: ColorsManager.background,
       body: SafeArea(
         child: Column(
           children: [
-            _buildSearchHeader(),
+            BlocBuilder<SearchBloc, SearchState>(
+              builder: (context, state) {
+                return CustomSearchBar(
+                  controller: _searchController,
+                  hintText: 'Search for movies...',
+                  onChanged: (query) {
+                    context.read<SearchBloc>().add(
+                      SearchMoviesEvent(query: query),
+                    );
+                  },
+                  onClear: () {
+                    _searchController.clear();
+                    context.read<SearchBloc>().add(ClearSearchEvent());
+                  },
+                  isSearching: state.isSearching,
+                );
+              },
+            ),
             Expanded(child: _buildSearchBody()),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSearchHeader() {
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: ColorsManager.surface,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Search Movies',
-            style: TextStyles.font24Primary700.copyWith(
-              color: ColorsManager.textPrimary,
-            ),
-          ),
-          verticalSpace(16.h),
-          _buildSearchTextField(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSearchTextField() {
-    return BlocBuilder<SearchBloc, SearchState>(
-      builder: (context, state) {
-        return TextField(
-          onTapOutside: (event) {
-            FocusScope.of(context).unfocus();
-          },
-          controller: _searchController,
-          style: TextStyles.font16Primary400.copyWith(
-            color: ColorsManager.textPrimary,
-          ),
-          decoration: InputDecoration(
-            hintText: 'Search for movies...',
-            hintStyle: TextStyles.font16Primary600.copyWith(
-              color: ColorsManager.textSecondary,
-            ),
-            prefixIcon: Icon(
-              Icons.search,
-              color: ColorsManager.textSecondary,
-              size: 24.sp,
-            ),
-            suffixIcon: _searchController.text.isNotEmpty
-                ? IconButton(
-                    icon: Icon(
-                      Icons.clear,
-                      color: ColorsManager.textSecondary,
-                      size: 20.sp,
-                    ),
-                    onPressed: () {
-                      _searchController.clear();
-                      context.read<SearchBloc>().add(ClearSearchEvent());
-                    },
-                  )
-                : null,
-            filled: true,
-            fillColor: ColorsManager.cardBackground,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: ColorsManager.primary, width: 2.w),
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 16.h,
-            ),
-          ),
-          onChanged: (query) {
-            setState(() {}); // Update suffix icon visibility
-            context.read<SearchBloc>().add(SearchMoviesEvent(query: query));
-          },
-          onSubmitted: (query) {
-            context.read<SearchBloc>().add(SearchMoviesEvent(query: query));
-          },
-        );
-      },
     );
   }
 

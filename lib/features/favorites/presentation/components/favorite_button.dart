@@ -109,12 +109,16 @@ class _FavoriteButtonState extends State<FavoriteButton>
                         : widget.size,
                     decoration: widget.showBackground
                         ? BoxDecoration(
-                            color: AppColors.cardBackground.withOpacity(0.8),
+                            color: ColorsManager.cardBackground.withOpacity(
+                              0.8,
+                            ),
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: isFavorite
-                                  ? AppColors.accentRed.withOpacity(0.3)
-                                  : AppColors.lightGray.withOpacity(0.2),
+                                  ? ColorsManager.accentRed.withOpacity(0.3)
+                                  : ColorsManager.textSecondary.withOpacity(
+                                      0.2,
+                                    ),
                               width: 2.w,
                             ),
                           )
@@ -133,8 +137,8 @@ class _FavoriteButtonState extends State<FavoriteButton>
                           key: ValueKey(isFavorite),
                           size: widget.size,
                           color: isFavorite
-                              ? AppColors.accentRed
-                              : AppColors.lightGray,
+                              ? ColorsManager.accentRed
+                              : ColorsManager.textSecondary,
                         ),
                       ),
                     ),
