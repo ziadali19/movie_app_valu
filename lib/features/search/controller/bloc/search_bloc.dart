@@ -1,0 +1,182 @@
+import 'dart:async';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app_valu/core/network/generic_response.dart';
+
+import '../../../movies/data/models/movie.dart';
+import '../../data/repository/search_repository.dart';
+import 'search_event.dart';
+import 'search_state.dart';
+
+class SearchBloc extends Bloc<SearchEvent, SearchState> {
+  final BaseSearchRepository repository;
+  Timer? _debounceTimer;
+  String? _lastQuery;
+
+  // Debounce duration - wait 500ms after user stops typing
+  static const Duration _debounceDuration = Duration(milliseconds: 500);
+
+  SearchBloc(this.repository) : super(const SearchState()) {
+    on<SearchMoviesEvent>(_onSearchMovies);
+    on<LoadMoreSearchResultsEvent>(_onLoadMoreSearchResults);
+    on<ClearSearchEvent>(_onClearSearch);
+    on<RetrySearchEvent>(_onRetrySearch);
+  }
+
+  @override
+  Future<void> close() {
+    _debounceTimer?.cancel();
+    return super.close();
+  }
+
+  Future<void> _onSearchMovies(
+    SearchMoviesEvent event,
+    Emitter<SearchState> emit,
+  ) async {
+    // Cancel previous timer
+    _debounceTimer?.cancel();
+
+    // If query is empty, clear results
+    if (event.query.trim().isEmpty) {
+      emit(
+        state.copyWith(
+          status: SearchStatus.initial,
+          movies: [],
+          query: '',
+          errorMessage: null,
+          currentPage: 1,
+          hasMorePages: true,
+        ),
+      );
+      return;
+    }
+
+    // If same query, don't search again
+    if (event.query.trim() == _lastQuery && state.hasResults) {
+      return;
+    }
+
+    // Start debounce timer - use Completer to await the timer properly
+    final completer = Completer<void>();
+    _debounceTimer = Timer(_debounceDuration, () async {
+      _lastQuery = event.query.trim();
+
+      // Check if emit is still valid (event handler hasn't completed)
+      if (!emit.isDone) {
+        emit(
+          state.copyWith(
+            status: SearchStatus.searching,
+            query: event.query.trim(),
+            movies: [], // Clear previous results
+            currentPage: 1,
+            hasMorePages: true,
+            errorMessage: null,
+          ),
+        );
+
+        await _performSearch(event.query.trim(), 1, emit);
+      }
+      completer.complete();
+    });
+
+    // Wait for the timer to complete
+    await completer.future;
+  }
+
+  Future<void> _onLoadMoreSearchResults(
+    LoadMoreSearchResultsEvent event,
+    Emitter<SearchState> emit,
+  ) async {
+    // Don't load more if already loading, no more pages, or no query
+    if (state.isLoadingMore || !state.hasMorePages || state.query.isEmpty) {
+      return;
+    }
+
+    emit(state.copyWith(isLoadingMore: true));
+
+    final nextPage = state.currentPage + 1;
+    final result = await repository.searchMovies(
+      query: state.query,
+      page: nextPage,
+    );
+
+    result.fold(
+      (error) => emit(
+        state.copyWith(
+          status: SearchStatus.error,
+          isLoadingMore: false,
+          errorMessage: error.message ?? 'Failed to load more results',
+        ),
+      ),
+      (apiResponse) => _handleSuccessResponse(apiResponse, emit),
+    );
+  }
+
+  Future<void> _onClearSearch(
+    ClearSearchEvent event,
+    Emitter<SearchState> emit,
+  ) async {
+    _debounceTimer?.cancel();
+    _lastQuery = null;
+
+    emit(const SearchState()); // Reset to initial state
+  }
+
+  Future<void> _onRetrySearch(
+    RetrySearchEvent event,
+    Emitter<SearchState> emit,
+  ) async {
+    if (state.query.isNotEmpty) {
+      // Retry the current search
+      add(SearchMoviesEvent(query: state.query));
+    }
+  }
+
+  Future<void> _performSearch(
+    String query,
+    int page,
+    Emitter<SearchState> emit,
+  ) async {
+    final result = await repository.searchMovies(query: query, page: page);
+
+    // Check if emit is still valid before emitting
+    if (!emit.isDone) {
+      result.fold(
+        (error) => emit(
+          state.copyWith(
+            status: SearchStatus.error,
+            errorMessage: error.message ?? 'Search failed',
+          ),
+        ),
+        (apiResponse) => _handleSuccessResponse(apiResponse, emit),
+      );
+    }
+  }
+
+  void _handleSuccessResponse(
+    ApiResponse<List<Movie>> apiResponse,
+    Emitter<SearchState> emit,
+  ) {
+    // Check if emit is still valid before emitting
+    if (!emit.isDone) {
+      final newMovies = apiResponse.results ?? [];
+      final isLoadingMore = state.isLoadingMore;
+
+      // Determine if there are more pages
+      final currentPage = apiResponse.page ?? state.currentPage;
+      final totalPages = apiResponse.totalPages ?? 1;
+      final hasMorePages = currentPage < totalPages;
+
+      emit(
+        state.copyWith(
+          status: SearchStatus.success,
+          movies: isLoadingMore ? [...state.movies, ...newMovies] : newMovies,
+          currentPage: currentPage,
+          hasMorePages: hasMorePages,
+          isLoadingMore: false,
+          errorMessage: null,
+        ),
+      );
+    }
+  }
+}
