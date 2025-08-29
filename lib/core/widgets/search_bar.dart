@@ -31,7 +31,7 @@ class CustomSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16.w),
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: TextField(
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
         controller: controller,
