@@ -24,7 +24,7 @@ class MovieDetailsState {
     return MovieDetailsState(
       status: status ?? this.status,
       movieDetails: movieDetails ?? this.movieDetails,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: errorMessage,
       movieId: movieId ?? this.movieId,
     );
   }
