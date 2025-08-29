@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_valu/core/theming/colors.dart';
+import 'package:movie_app_valu/features/favorites/presentation/screens/favorites_screen.dart';
 import 'package:movie_app_valu/features/movies/presentation/screens/movies_list_screen.dart';
 import 'package:movie_app_valu/features/search/presentation/screens/search_screen.dart';
 
@@ -25,8 +26,8 @@ class MainNavigationScreen extends StatelessWidget {
               // Tab 2: Search
               const SearchScreen(),
 
-              // Tab 3: Favorites (Placeholder for now)
-              const SizedBox.shrink(),
+              // Tab 3: Favorites
+              const FavoritesScreen(),
             ],
           ),
           bottomNavigationBar: BottomNavBar(

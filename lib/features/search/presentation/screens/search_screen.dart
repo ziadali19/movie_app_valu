@@ -329,10 +329,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         arguments: movie.id,
                       );
                     },
-                    onFavoritePressed: () {
-                      // TODO: Add/remove from favorites
-                      debugPrint('Toggle favorite: ${movie.title}');
-                    },
                   );
                 }, childCount: state.movies.length),
               ),

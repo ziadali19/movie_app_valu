@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_valu/core/helpers/sizes_config.dart';
 import 'package:movie_app_valu/core/theming/themes.dart';
@@ -6,6 +7,8 @@ import 'package:movie_app_valu/core/utils/constants.dart';
 
 import 'core/routing/app_router.dart';
 import 'core/routing/routes.dart';
+import 'core/services/service_locator.dart';
+import 'features/favorites/controller/bloc/favorites_bloc.dart';
 
 class MovieAppValu extends StatelessWidget {
   const MovieAppValu({super.key});
@@ -19,24 +22,27 @@ class MovieAppValu extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
-          navigatorKey: AppConstants.navKey,
-          initialRoute: Routes.mainNavigation,
-          onGenerateRoute: (settings) {
-            return AppRouter.onGenerateRoute(settings);
-          },
-          builder: (context, child) {
-            final mediaQueryData = MediaQuery.of(context);
+        return BlocProvider(
+          create: (context) => getIt<FavoritesBloc>(),
+          child: MaterialApp(
+            navigatorKey: AppConstants.navKey,
+            initialRoute: Routes.mainNavigation,
+            onGenerateRoute: (settings) {
+              return AppRouter.onGenerateRoute(settings);
+            },
+            builder: (context, child) {
+              final mediaQueryData = MediaQuery.of(context);
 
-            return MediaQuery(
-              data: mediaQueryData.copyWith(
-                textScaler: const TextScaler.linear(1.0),
-              ),
-              child: child!,
-            );
-          },
-          debugShowCheckedModeBanner: false,
-          theme: Themes.instance.darkTheme(context),
+              return MediaQuery(
+                data: mediaQueryData.copyWith(
+                  textScaler: const TextScaler.linear(1.0),
+                ),
+                child: child!,
+              );
+            },
+            debugShowCheckedModeBanner: false,
+            theme: Themes.instance.darkTheme(context),
+          ),
         );
       },
     );

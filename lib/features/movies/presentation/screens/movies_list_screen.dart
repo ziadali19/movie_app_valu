@@ -176,13 +176,6 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
                           arguments: state.movies[index].id,
                         );
                       },
-                      onFavoritePressed: () {
-                        // TODO: Implement favorites functionality
-                        debugPrint(
-                          'Toggle favorite: ${state.movies[index].title}',
-                        );
-                      },
-                      isFavorite: false, // TODO: Check if movie is in favorites
                     );
                   }, childCount: state.movies.length),
                 ),

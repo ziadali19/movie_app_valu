@@ -84,15 +84,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         verticalSpace(24.h),
                         AdditionalInfoSection(movie: movie),
                         verticalSpace(32.h),
-                        FavoriteButton(
-                          onPressed: () {
-                            showSnackBar(
-                              'Favorites feature coming soon!',
-                              context,
-                              true,
-                            );
-                          },
-                        ),
+                        MovieDetailsFavoriteButton(movieDetails: movie),
                         verticalSpace(32.h),
                       ],
                     ),

@@ -13,4 +13,17 @@ class ColorsManager {
   static const Color cardBackground = Color(
     0xFF2A2A2A,
   ); // Movie card background
+  static const Color accentRed = Color(
+    0xFFE50914,
+  ); // Same as primary for consistency
+}
+
+// AppColors alias for favorites feature (to match existing usage)
+class AppColors {
+  static const Color primaryBackground = ColorsManager.background;
+  static const Color cardBackground = ColorsManager.cardBackground;
+  static const Color primaryBlue = Color(0xFF3B82F6); // Blue accent
+  static const Color white = ColorsManager.textPrimary;
+  static const Color lightGray = ColorsManager.textSecondary;
+  static const Color accentRed = ColorsManager.primary;
 }
