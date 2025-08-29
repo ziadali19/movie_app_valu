@@ -10,6 +10,7 @@ import 'package:movie_app_valu/core/widgets/app_error_view.dart';
 import 'package:movie_app_valu/core/widgets/app_loading.dart';
 import 'package:movie_app_valu/core/widgets/elevated_button_without_icon.dart';
 
+import '../../../../core/widgets/error_header.dart';
 import '../../controller/bloc/movies_bloc.dart';
 import '../../controller/bloc/movies_event.dart';
 import '../../controller/bloc/movies_state.dart';
@@ -51,7 +52,7 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
     if (!_scrollController.hasClients) return false;
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
+    return currentScroll >= (maxScroll);
   }
 
   @override
@@ -135,48 +136,20 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
       children: [
         // Error banner for when we have data but an error occurred
         if (state.hasError && state.hasData)
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(12.h),
-            color: ColorsManager.primary.withOpacity(0.1),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.warning_amber,
-                  color: ColorsManager.primary,
-                  size: 16.sp,
-                ),
-                horizontalSpace(8.w),
-                Expanded(
-                  child: Text(
-                    state.errorMessage ?? 'Failed to load new content',
-                    style: TextStyles.font12Primary500,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    if (state.hasData) {
-                      _scrollController.animateTo(
-                        _scrollController.position.maxScrollExtent,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                      context.read<MoviesBloc>().add(RetryLoadingMoviesEvent());
-                    } else {
-                      context.read<MoviesBloc>().add(RetryLoadingMoviesEvent());
-                    }
-                  },
-
-                  child: Text(
-                    'Retry',
-                    style: TextStyles.font12Primary500.copyWith(
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          ErrorHeader(
+            errorMessage: state.errorMessage ?? 'Failed to load new content',
+            onRetry: () {
+              if (state.hasData) {
+                _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+                context.read<MoviesBloc>().add(RetryLoadingMoviesEvent());
+              } else {
+                context.read<MoviesBloc>().add(RetryLoadingMoviesEvent());
+              }
+            },
           ),
 
         // Movies list with refresh

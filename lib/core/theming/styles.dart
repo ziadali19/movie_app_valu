@@ -118,4 +118,22 @@ class TextStyles {
     color: ColorsManager.primary,
     fontWeight: FontWeight.w400,
   );
+
+  static TextStyle font16Primary600 = TextStyle(
+    fontSize: 16.sp,
+    color: ColorsManager.primary,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle font16Primary400 = TextStyle(
+    fontSize: 16.sp,
+    color: ColorsManager.primary,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle font24Primary700 = TextStyle(
+    fontSize: 24.sp,
+    color: ColorsManager.primary,
+    fontWeight: FontWeight.w700,
+  );
 }
