@@ -1,41 +1,41 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
 import 'package:movie_app_valu/core/network/generic_response.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../movies/data/models/movie.dart';
 import '../../data/repository/search_repository.dart';
 import 'search_event.dart';
 import 'search_state.dart';
 
+typedef EventMapper<E> = Stream<void> Function(E event);
+
+EventTransformer<E> debounceRestartable<E>(Duration duration) {
+  return (events, mapper) => events.debounceTime(duration).switchMap(mapper);
+}
+
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final BaseSearchRepository repository;
-  Timer? _debounceTimer;
   String? _lastQuery;
 
-  // Debounce duration - wait 500ms after user stops typing
   static const Duration _debounceDuration = Duration(milliseconds: 500);
 
   SearchBloc(this.repository) : super(const SearchState()) {
-    on<SearchMoviesEvent>(_onSearchMovies);
+    on<SearchMoviesEvent>(
+      _onSearchMovies,
+      transformer: debounceRestartable<SearchMoviesEvent>(_debounceDuration),
+    );
     on<LoadMoreSearchResultsEvent>(_onLoadMoreSearchResults);
     on<ClearSearchEvent>(_onClearSearch);
     on<RetrySearchEvent>(_onRetrySearch);
-  }
-
-  @override
-  Future<void> close() {
-    _debounceTimer?.cancel();
-    return super.close();
   }
 
   Future<void> _onSearchMovies(
     SearchMoviesEvent event,
     Emitter<SearchState> emit,
   ) async {
-    // Cancel previous timer
-    _debounceTimer?.cancel();
-
     // If query is empty, clear results
     if (event.query.trim().isEmpty) {
       emit(
@@ -51,43 +51,31 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       return;
     }
 
-    // If same query, don't search again
+    // If same query and we have results, don't search again
     if (event.query.trim() == _lastQuery && state.hasResults) {
       return;
     }
 
-    // Start debounce timer - use Completer to await the timer properly
-    final completer = Completer<void>();
-    _debounceTimer = Timer(_debounceDuration, () async {
-      _lastQuery = event.query.trim();
+    _lastQuery = event.query.trim();
 
-      // Check if emit is still valid (event handler hasn't completed)
-      if (!emit.isDone) {
-        emit(
-          state.copyWith(
-            status: SearchStatus.searching,
-            query: event.query.trim(),
-            movies: [], // Clear previous results
-            currentPage: 1,
-            hasMorePages: true,
-            errorMessage: null,
-          ),
-        );
+    emit(
+      state.copyWith(
+        status: SearchStatus.searching,
+        query: event.query.trim(),
+        movies: [],
+        currentPage: 1,
+        hasMorePages: true,
+        errorMessage: null,
+      ),
+    );
 
-        await _performSearch(event.query.trim(), 1, emit);
-      }
-      completer.complete();
-    });
-
-    // Wait for the timer to complete
-    await completer.future;
+    await _performSearch(event.query.trim(), 1, emit);
   }
 
   Future<void> _onLoadMoreSearchResults(
     LoadMoreSearchResultsEvent event,
     Emitter<SearchState> emit,
   ) async {
-    // Don't load more if already loading, no more pages, or no query
     if (state.isLoadingMore || !state.hasMorePages || state.query.isEmpty) {
       return;
     }
@@ -116,10 +104,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     ClearSearchEvent event,
     Emitter<SearchState> emit,
   ) async {
-    _debounceTimer?.cancel();
     _lastQuery = null;
-
-    emit(const SearchState()); // Reset to initial state
+    emit(const SearchState());
   }
 
   Future<void> _onRetrySearch(
@@ -127,7 +113,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) async {
     if (state.query.isNotEmpty) {
-      // Retry the current search
       add(SearchMoviesEvent(query: state.query));
     }
   }
@@ -162,7 +147,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       final newMovies = apiResponse.results ?? [];
       final isLoadingMore = state.isLoadingMore;
 
-      // Determine if there are more pages
       final currentPage = apiResponse.page ?? state.currentPage;
       final totalPages = apiResponse.totalPages ?? 1;
       final hasMorePages = currentPage < totalPages;

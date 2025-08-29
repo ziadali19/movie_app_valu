@@ -23,6 +23,7 @@ dependencies:
   dartz:
   hive:
   hive_flutter:
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:
