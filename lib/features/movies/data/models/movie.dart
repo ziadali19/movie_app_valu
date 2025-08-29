@@ -133,8 +133,37 @@ class Movie {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Movie && runtimeType == other.runtimeType && id == other.id;
+      other is Movie &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          title == other.title &&
+          overview == other.overview &&
+          posterPath == other.posterPath &&
+          backdropPath == other.backdropPath &&
+          releaseDate == other.releaseDate &&
+          voteAverage == other.voteAverage &&
+          voteCount == other.voteCount &&
+          adult == other.adult &&
+          genreIds.toString() == other.genreIds.toString() &&
+          originalLanguage == other.originalLanguage &&
+          originalTitle == other.originalTitle &&
+          popularity == other.popularity &&
+          video == other.video;
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode =>
+      id.hashCode ^
+      title.hashCode ^
+      overview.hashCode ^
+      posterPath.hashCode ^
+      backdropPath.hashCode ^
+      releaseDate.hashCode ^
+      voteAverage.hashCode ^
+      voteCount.hashCode ^
+      adult.hashCode ^
+      genreIds.hashCode ^
+      originalLanguage.hashCode ^
+      originalTitle.hashCode ^
+      popularity.hashCode ^
+      video.hashCode;
 }

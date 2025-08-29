@@ -34,7 +34,7 @@ void showSnackBar(String? msg, BuildContext context, bool isSuccess) {
     ),
     backgroundColor: isSuccess ? ColorsManager.primary : Colors.red.shade600,
     behavior: SnackBarBehavior.floating,
-    margin: EdgeInsets.only(bottom: 80.h, left: 16.w, right: 16.w),
+    margin: EdgeInsets.only(bottom: 40.h, left: 16.w, right: 16.w),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
     duration: const Duration(seconds: 4),
     elevation: 8,
