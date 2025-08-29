@@ -46,8 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent * 0.9) {
-      // Load more when 90% scrolled
+        _scrollController.position.maxScrollExtent) {
       context.read<SearchBloc>().add(LoadMoreSearchResultsEvent());
     }
   }
@@ -304,6 +303,11 @@ class _SearchScreenState extends State<SearchScreen> {
           ErrorHeader(
             errorMessage: state.errorMessage ?? 'Failed to load more results',
             onRetry: () {
+              _scrollController.animateTo(
+                _scrollController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
               context.read<SearchBloc>().add(LoadMoreSearchResultsEvent());
             },
           ),
