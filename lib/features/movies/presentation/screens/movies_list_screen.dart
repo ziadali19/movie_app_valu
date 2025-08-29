@@ -154,8 +154,19 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () =>
-                      context.read<MoviesBloc>().add(RetryLoadingMoviesEvent()),
+                  onTap: () {
+                    if (state.hasData) {
+                      _scrollController.animateTo(
+                        _scrollController.position.maxScrollExtent,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                      context.read<MoviesBloc>().add(RetryLoadingMoviesEvent());
+                    } else {
+                      context.read<MoviesBloc>().add(RetryLoadingMoviesEvent());
+                    }
+                  },
+
                   child: Text(
                     'Retry',
                     style: TextStyles.font12Primary500.copyWith(
