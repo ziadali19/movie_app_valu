@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/helpers/show_toast.dart';
 import '../../../../core/helpers/spacing.dart';
+import '../../../../core/routing/routes.dart';
 import '../../../../core/theming/colors.dart';
 import '../../../../core/theming/styles.dart';
 import '../../../../core/widgets/app_error_view.dart';
@@ -322,8 +323,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   return MovieCard(
                     movie: movie,
                     onTap: () {
-                      // TODO: Navigate to movie details
-                      debugPrint('Navigate to movie details: ${movie.title}');
+                      Navigator.pushNamed(
+                        context,
+                        Routes.movieDetails,
+                        arguments: movie.id,
+                      );
                     },
                     onFavoritePressed: () {
                       // TODO: Add/remove from favorites

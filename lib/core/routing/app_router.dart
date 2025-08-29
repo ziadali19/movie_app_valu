@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_valu/core/services/service_locator.dart';
 import 'package:movie_app_valu/features/main-navigation/controller/bloc/main_navigation_bloc.dart';
 import 'package:movie_app_valu/features/main-navigation/presentation/screens/main-navigation_screen.dart';
+import 'package:movie_app_valu/features/movie_details/controller/bloc/movie_details_bloc.dart';
+import 'package:movie_app_valu/features/movie_details/presentation/screens/movie_details_screen.dart';
 import 'package:movie_app_valu/features/movies/controller/bloc/movies_bloc.dart';
 import 'package:movie_app_valu/features/movies/presentation/screens/movies_list_screen.dart';
 import 'package:movie_app_valu/features/search/controller/bloc/search_bloc.dart';
@@ -27,6 +29,15 @@ class AppRouter {
       case Routes.moviesList:
         return MaterialPageRoute(
           builder: (context) => const MoviesListScreen(),
+        );
+
+      case Routes.movieDetails:
+        final movieId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<MovieDetailsBloc>(),
+            child: MovieDetailsScreen(movieId: movieId),
+          ),
         );
 
       default:
