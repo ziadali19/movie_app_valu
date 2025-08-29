@@ -1,6 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:movie_app_valu/core/network/dio_helper.dart';
 import 'package:movie_app_valu/features/main-navigation/controller/bloc/main_navigation_bloc.dart';
+import 'package:movie_app_valu/features/movie_details/controller/bloc/movie_details_bloc.dart';
+import 'package:movie_app_valu/features/movie_details/data/remote_data_source/movie_details_remote_data_source.dart';
+import 'package:movie_app_valu/features/movie_details/data/repository/movie_details_repository.dart';
 import 'package:movie_app_valu/features/movies/controller/bloc/movies_bloc.dart';
 import 'package:movie_app_valu/features/movies/data/remote_data_source/movies_remote_data_source.dart';
 import 'package:movie_app_valu/features/movies/data/repository/movies_repository.dart';
@@ -20,6 +23,9 @@ class ServiceLocator {
 
     // Search Feature Dependencies
     _registerSearchDependencies();
+
+    // Movie Details Feature Dependencies
+    _registerMovieDetailsDependencies();
   }
 
   static void _registerNavigationDependencies() {
@@ -54,6 +60,21 @@ class ServiceLocator {
     // Register SearchRemoteDataSource as LazySingleton
     getIt.registerLazySingleton<BaseSearchRemoteDataSource>(
       () => SearchRemoteDataSource(DioHelper.instance),
+    );
+  }
+
+  static void _registerMovieDetailsDependencies() {
+    // Register MovieDetailsBloc as Factory (new instance each time)
+    getIt.registerFactory<MovieDetailsBloc>(() => MovieDetailsBloc(getIt()));
+
+    // Register MovieDetailsRepository as LazySingleton (single instance)
+    getIt.registerLazySingleton<BaseMovieDetailsRepository>(
+      () => MovieDetailsRepository(getIt()),
+    );
+
+    // Register MovieDetailsRemoteDataSource as LazySingleton
+    getIt.registerLazySingleton<BaseMovieDetailsRemoteDataSource>(
+      () => MovieDetailsRemoteDataSource(DioHelper.instance),
     );
   }
 }

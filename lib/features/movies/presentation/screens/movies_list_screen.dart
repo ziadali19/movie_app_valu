@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_valu/core/helpers/show_toast.dart';
+import 'package:movie_app_valu/core/routing/routes.dart';
 import 'package:movie_app_valu/core/theming/colors.dart';
 import 'package:movie_app_valu/core/theming/styles.dart';
 import 'package:movie_app_valu/core/helpers/spacing.dart';
@@ -169,9 +170,10 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
                     return MovieCard(
                       movie: state.movies[index],
                       onTap: () {
-                        // TODO: Navigate to movie details
-                        debugPrint(
-                          'Tapped movie: ${state.movies[index].title}',
+                        Navigator.pushNamed(
+                          context,
+                          Routes.movieDetails,
+                          arguments: state.movies[index].id,
                         );
                       },
                       onFavoritePressed: () {
