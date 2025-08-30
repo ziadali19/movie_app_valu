@@ -56,6 +56,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
           if (state.hasError && !state.hasData) {
             return AppErrorView(
+              isFromMovieDetails: true,
               message: state.errorMessage ?? 'Failed to load movie details',
               onRetry: () {
                 context.read<MovieDetailsBloc>().add(

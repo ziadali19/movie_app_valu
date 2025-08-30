@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_valu/core/theming/colors.dart';
 import 'package:movie_app_valu/core/helpers/spacing.dart';
-import 'package:movie_app_valu/core/services/service_locator.dart';
 import 'package:movie_app_valu/features/main-navigation/controller/bloc/main_navigation_bloc.dart';
+
+import '../../../../core/theming/styles.dart';
 
 class EmptyFavoritesState extends StatelessWidget {
   const EmptyFavoritesState({super.key});
@@ -44,11 +46,10 @@ class EmptyFavoritesState extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () {
                 // Navigate to movies list
-                final mainNavigationBloc = getIt<MainNavigationBloc>();
-                mainNavigationBloc.add(
+
+                context.read<MainNavigationBloc>().add(
                   ChangeNavBarTabEvent(index: 0),
-                ); // Movies tab
-                Navigator.of(context).popUntil((route) => route.isFirst);
+                );
               },
               icon: Icon(
                 Icons.movie_outlined,
@@ -57,9 +58,8 @@ class EmptyFavoritesState extends StatelessWidget {
               ),
               label: Text(
                 'Discover Movies',
-                style: TextStyle(
+                style: TextStyles.font16Primary400.copyWith(
                   color: ColorsManager.textPrimary,
-                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                 ),
               ),

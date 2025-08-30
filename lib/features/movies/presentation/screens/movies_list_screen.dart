@@ -78,56 +78,24 @@ class _MoviesListScreenState extends State<MoviesListScreen> {
         child: BlocBuilder<MoviesBloc, MoviesState>(
           builder: (context, state) {
             if (state.isLoading) {
-              return _buildLoadingState();
+              return const AppLoading();
             }
 
             if (state.hasError && !state.hasData) {
-              return _buildErrorState(state.errorMessage);
+              return AppErrorView(
+                message: state.errorMessage ?? 'Failed to load movies',
+                onRetry: () =>
+                    context.read<MoviesBloc>().add(RetryLoadingMoviesEvent()),
+              );
             }
 
             if (state.hasData) {
               return _buildMoviesList(state);
             }
 
-            return _buildInitialState();
+            return const SizedBox.shrink();
           },
         ),
-      ),
-    );
-  }
-
-  Widget _buildLoadingState() {
-    return const AppLoading();
-  }
-
-  Widget _buildErrorState(String? errorMessage) {
-    return AppErrorView(
-      message: errorMessage ?? 'Failed to load movies',
-      onRetry: () => context.read<MoviesBloc>().add(RetryLoadingMoviesEvent()),
-    );
-  }
-
-  Widget _buildInitialState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.movie, size: 64.sp, color: ColorsManager.textSecondary),
-          verticalSpace(16.h),
-          Text(
-            'Welcome to CineScout',
-            style: TextStyles.font20Black700.copyWith(
-              color: ColorsManager.textPrimary,
-            ),
-          ),
-          verticalSpace(8.h),
-          Text(
-            'Discover amazing movies',
-            style: TextStyles.font14Black400.copyWith(
-              color: ColorsManager.textSecondary,
-            ),
-          ),
-        ],
       ),
     );
   }

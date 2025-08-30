@@ -32,6 +32,7 @@ class MovieCard extends StatelessWidget {
           ],
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Movie Poster
             _buildPosterImage(),
@@ -83,7 +84,7 @@ class MovieCard extends StatelessWidget {
       ),
       child: SizedBox(
         width: 100.w,
-        height: 140.h,
+        height: 178.h,
         child: CachedNetworkImage(
           imageUrl: movie.fullPosterUrl,
           fit: BoxFit.cover,
