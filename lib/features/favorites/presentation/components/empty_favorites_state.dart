@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_app_valu/core/helpers/extensions.dart';
 import 'package:movie_app_valu/core/theming/colors.dart';
 import 'package:movie_app_valu/core/helpers/spacing.dart';
 import 'package:movie_app_valu/features/main-navigation/controller/bloc/main_navigation_bloc.dart';
@@ -18,10 +20,14 @@ class EmptyFavoritesState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.favorite_border,
-              size: 80.w,
-              color: ColorsManager.textSecondary,
+            SvgPicture.asset(
+              'heart'.svgPath(),
+              width: 50.w,
+              height: 50.w,
+              colorFilter: ColorFilter.mode(
+                ColorsManager.textSecondary,
+                BlendMode.srcIn,
+              ),
             ),
             verticalSpace(24.h),
             Text(

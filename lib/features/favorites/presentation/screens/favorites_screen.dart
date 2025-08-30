@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:movie_app_valu/core/theming/colors.dart';
 import 'package:movie_app_valu/core/widgets/app_loading.dart';
@@ -9,6 +8,7 @@ import 'package:movie_app_valu/core/widgets/search_bar.dart';
 import 'package:movie_app_valu/features/favorites/controller/bloc/favorites_bloc.dart';
 import 'package:movie_app_valu/features/favorites/controller/bloc/favorites_event.dart';
 import 'package:movie_app_valu/features/favorites/controller/bloc/favorites_state.dart';
+import '../components/clear_all_alert_dialog.dart';
 import '../components/empty_favorites_state.dart';
 import '../components/favorites_app_bar.dart';
 import '../components/favorites_grid.dart';
@@ -57,46 +57,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   void _clearAllFavorites() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: ColorsManager.background,
-        title: Text(
-          'Clear All Favorites',
-          style: TextStyle(
-            color: ColorsManager.textPrimary,
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        content: Text(
-          'Are you sure you want to remove all movies from your favorites? This action cannot be undone.',
-          style: TextStyle(color: ColorsManager.textSecondary, fontSize: 14.sp),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(
-              'Cancel',
-              style: TextStyle(
-                color: ColorsManager.textSecondary,
-                fontSize: 14.sp,
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              context.read<FavoritesBloc>().add(ClearAllFavoritesEvent());
-            },
-            child: Text(
-              'Clear All',
-              style: TextStyle(
-                color: ColorsManager.accentRed,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
+      builder: (context) => ClearAllAlertDialog(
+        onCancel: () => Navigator.of(context).pop(),
+        onClear: () {
+          Navigator.of(context).pop();
+          context.read<FavoritesBloc>().add(ClearAllFavoritesEvent());
+        },
       ),
     );
   }

@@ -15,7 +15,7 @@ import '../components/details_backdrop_app_bar.dart';
 import '../components/details_header.dart';
 import '../components/additional_info_section.dart';
 import '../components/overview_section.dart';
-import '../components/favorite_button.dart';
+import '../components/movie_details_favorite_button.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
