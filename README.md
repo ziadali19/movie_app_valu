@@ -6,6 +6,23 @@ A production-quality Flutter application that showcases modern mobile developmen
 
 **CineScout** (branded as "Valu Movies") is a sophisticated movie discovery application built with Flutter that demonstrates enterprise-level development practices. The app provides a seamless experience for browsing popular movies, searching the vast TMDB database, viewing detailed movie information, and managing a personal favorites collection with offline support.
 
+## 🎥 App Demo Video
+
+**Watch the complete feature demonstration:**
+
+[![CineScout App Demo](https://img.shields.io/badge/▶️_Watch_Full_Demo-FF0000?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1thVXLSXLVcOc9SlXjEQB06JobodFiTAu/view?usp=sharing)
+
+### 🎬 Demo Showcases:
+
+- **🎭 Movie Discovery**: Smooth browsing with infinite scroll
+- **🔍 Smart Search**: Real-time search with debouncing
+- **📄 Rich Details**: Comprehensive movie information
+- **❤️ Favorites System**: Add/remove with offline storage
+- **🔄 Error Handling**: Graceful error recovery
+- **⚡ Performance**: Optimized scrolling and responsive UI
+
+---
+
 ## ✨ Key Features Implemented
 
 ### 🎯 Core User Stories (All Implemented)
