@@ -9,7 +9,6 @@ class SearchState {
   final String? errorMessage;
   final int currentPage;
   final bool hasMorePages;
-  final bool isLoadingMore;
 
   const SearchState({
     this.status = SearchStatus.initial,
@@ -18,7 +17,6 @@ class SearchState {
     this.errorMessage,
     this.currentPage = 1,
     this.hasMorePages = true,
-    this.isLoadingMore = false,
   });
 
   SearchState copyWith({
@@ -28,7 +26,6 @@ class SearchState {
     String? errorMessage,
     int? currentPage,
     bool? hasMorePages,
-    bool? isLoadingMore,
   }) {
     return SearchState(
       status: status ?? this.status,
@@ -37,7 +34,6 @@ class SearchState {
       errorMessage: errorMessage ?? this.errorMessage,
       currentPage: currentPage ?? this.currentPage,
       hasMorePages: hasMorePages ?? this.hasMorePages,
-      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     );
   }
 
@@ -47,6 +43,7 @@ class SearchState {
   bool get hasResults => movies.isNotEmpty;
   bool get isInitial => status == SearchStatus.initial;
   bool get isSuccess => status == SearchStatus.success;
+  bool get isLoadingMore => status == SearchStatus.loadingMore;
   bool get canLoadMore =>
       hasMorePages && !isLoadingMore && !isSearching && query.isNotEmpty;
   bool get isEmpty =>
@@ -62,8 +59,7 @@ class SearchState {
           query == other.query &&
           errorMessage == other.errorMessage &&
           currentPage == other.currentPage &&
-          hasMorePages == other.hasMorePages &&
-          isLoadingMore == other.isLoadingMore;
+          hasMorePages == other.hasMorePages;
 
   @override
   int get hashCode =>
@@ -72,11 +68,10 @@ class SearchState {
       query.hashCode ^
       errorMessage.hashCode ^
       currentPage.hashCode ^
-      hasMorePages.hashCode ^
-      isLoadingMore.hashCode;
+      hasMorePages.hashCode;
 
   @override
   String toString() {
-    return 'SearchState{status: $status, moviesCount: ${movies.length}, query: "$query", currentPage: $currentPage, hasMorePages: $hasMorePages, isLoadingMore: $isLoadingMore}';
+    return 'SearchState{status: $status, moviesCount: ${movies.length}, query: "$query", currentPage: $currentPage, hasMorePages: $hasMorePages}';
   }
 }

@@ -42,7 +42,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   ) async {
     if (!state.canLoadMore) return;
 
-    emit(state.copyWith(isLoadingMore: true));
+    emit(state.copyWith(status: MoviesStatus.loadingMore));
 
     final nextPage = state.currentPage + 1;
     final result = await repository.getPopularMovies(page: nextPage);
@@ -51,7 +51,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       (error) => emit(
         state.copyWith(
           status: MoviesStatus.error,
-          isLoadingMore: false,
+
           errorMessage: error.message ?? 'Failed to load more movies',
         ),
       ),
@@ -114,7 +114,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         movies: allMovies,
         currentPage: apiResponse.page ?? state.currentPage,
         hasMorePages: apiResponse.hasNextPage,
-        isLoadingMore: false,
+
         errorMessage: null, // Clear any previous errors
       ),
     );
