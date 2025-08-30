@@ -12,6 +12,8 @@ A production-quality Flutter application that showcases modern mobile developmen
 
 [![CineScout App Demo](https://img.shields.io/badge/▶️_Watch_Full_Demo-FF0000?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1thVXLSXLVcOc9SlXjEQB06JobodFiTAu/view?usp=sharing)
 
+🎥 [Watch App Demo](https://drive.google.com/file/d/1thVXLSXLVcOc9SlXjEQB06JobodFiTAu/view?usp=sharing)
+
 ### 🎬 Demo Showcases:
 
 - **🎭 Movie Discovery**: Smooth browsing with infinite scroll
