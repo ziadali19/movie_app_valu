@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_app_valu/core/helpers/extensions.dart';
 import 'package:movie_app_valu/core/theming/colors.dart';
 import 'package:movie_app_valu/features/favorites/controller/bloc/favorites_bloc.dart';
 import 'package:movie_app_valu/features/favorites/controller/bloc/favorites_event.dart';
@@ -132,13 +134,19 @@ class _FavoriteButtonState extends State<FavoriteButton>
                             child: child,
                           );
                         },
-                        child: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                        child: SvgPicture.asset(
+                          isFavorite
+                              ? 'bold-heart'.svgPath()
+                              : 'heart'.svgPath(),
                           key: ValueKey(isFavorite),
-                          size: widget.size,
-                          color: isFavorite
-                              ? ColorsManager.accentRed
-                              : ColorsManager.textSecondary,
+                          width: widget.size,
+                          height: widget.size,
+                          colorFilter: ColorFilter.mode(
+                            isFavorite
+                                ? ColorsManager.primary
+                                : ColorsManager.textSecondary,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ),

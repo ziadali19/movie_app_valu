@@ -18,6 +18,8 @@ class MovieAppValu extends StatelessWidget {
     return ScreenUtilInit(
       designSize: SizesConfig(context).isDesktop
           ? const Size(1440, 905)
+          : SizesConfig(context).isTablet
+          ? const Size(600, 900)
           : const Size(411.42857142857144, 843.4285714285714),
       minTextAdapt: true,
       splitScreenMode: true,

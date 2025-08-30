@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart' show SvgPicture;
+import 'package:movie_app_valu/core/helpers/extensions.dart';
 import 'package:movie_app_valu/core/theming/colors.dart';
 import 'package:movie_app_valu/features/favorites/controller/bloc/favorites_state.dart';
 
@@ -29,7 +31,15 @@ class FavoritesInfo extends StatelessWidget {
           ),
           const Spacer(),
           if (!isSearching && state.hasFavorites)
-            Icon(Icons.favorite, color: ColorsManager.accentRed, size: 16.w),
+            SvgPicture.asset(
+              'bold-heart'.svgPath(),
+              width: 16.w,
+              height: 16.w,
+              colorFilter: ColorFilter.mode(
+                ColorsManager.accentRed,
+                BlendMode.srcIn,
+              ),
+            ),
         ],
       ),
     );

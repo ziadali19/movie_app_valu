@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app_valu/core/helpers/extensions.dart';
 
 import '../../../../core/theming/colors.dart';
 import 'nav_item.dart';
@@ -12,11 +13,12 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90.h,
-
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+      clipBehavior: Clip.hardEdge,
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       decoration: BoxDecoration(
-        color: ColorsManager.secondary,
-        borderRadius: BorderRadius.circular(24.r),
+        color: ColorsManager.cardBackground,
+        borderRadius: BorderRadius.circular(30.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.4),
@@ -32,34 +34,33 @@ class BottomNavBar extends StatelessWidget {
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24.r),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            NavItem(
-              icon: Icons.movie_outlined,
-              activeIcon: Icons.movie,
-              label: 'Movies',
-              isSelected: index == 0,
-              onTap: () => onTap?.call(0),
-            ),
-            NavItem(
-              icon: Icons.search_outlined,
-              activeIcon: Icons.search,
-              label: 'Search',
-              isSelected: index == 1,
-              onTap: () => onTap?.call(1),
-            ),
-            NavItem(
-              icon: Icons.favorite_outline,
-              activeIcon: Icons.favorite,
-              label: 'Favorites',
-              isSelected: index == 2,
-              onTap: () => onTap?.call(2),
-            ),
-          ],
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          NavItem(
+            svgIcon: 'movie'.svgPath(),
+            svgActiveIcon: 'movie'.svgPath(),
+
+            label: 'Movies',
+            isSelected: index == 0,
+            onTap: () => onTap?.call(0),
+          ),
+          NavItem(
+            svgIcon: 'search'.svgPath(),
+            svgActiveIcon: 'search'.svgPath(),
+
+            label: 'Search',
+            isSelected: index == 1,
+            onTap: () => onTap?.call(1),
+          ),
+          NavItem(
+            svgIcon: 'heart'.svgPath(),
+            svgActiveIcon: 'bold-heart'.svgPath(),
+            label: 'Favorites',
+            isSelected: index == 2,
+            onTap: () => onTap?.call(2),
+          ),
+        ],
       ),
     );
   }
