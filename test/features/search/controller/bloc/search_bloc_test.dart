@@ -217,13 +217,13 @@ void main() {
           query: 'batman',
           currentPage: 1,
           hasMorePages: true,
-          isLoadingMore: false,
+
           errorMessage: null,
         ),
         act: (bloc) => bloc.add(LoadMoreSearchResultsEvent()),
         expect: () => [
           isA<SearchState>()
-              .having((s) => s.status, 'status', SearchStatus.success)
+              .having((s) => s.status, 'status', SearchStatus.loadingMore)
               .having((s) => s.isLoadingMore, 'isLoadingMore', true),
           isA<SearchState>()
               .having((s) => s.status, 'status', SearchStatus.success)
@@ -252,13 +252,13 @@ void main() {
           query: 'batman',
           currentPage: 1,
           hasMorePages: true,
-          isLoadingMore: false,
+
           errorMessage: null,
         ),
         act: (bloc) => bloc.add(LoadMoreSearchResultsEvent()),
         expect: () => [
           isA<SearchState>()
-              .having((s) => s.status, 'status', SearchStatus.success)
+              .having((s) => s.status, 'status', SearchStatus.loadingMore)
               .having((s) => s.isLoadingMore, 'isLoadingMore', true),
           isA<SearchState>()
               .having((s) => s.status, 'status', SearchStatus.error)
@@ -280,7 +280,7 @@ void main() {
           query: 'batman',
           currentPage: 10,
           hasMorePages: false,
-          isLoadingMore: false,
+
           errorMessage: null,
         ),
         act: (bloc) => bloc.add(LoadMoreSearchResultsEvent()),
@@ -299,12 +299,12 @@ void main() {
         'does not load more when already loading',
         build: () => searchBloc,
         seed: () => const SearchState(
-          status: SearchStatus.success,
+          status: SearchStatus.loadingMore,
           movies: [],
           query: 'batman',
           currentPage: 1,
           hasMorePages: true,
-          isLoadingMore: true,
+
           errorMessage: null,
         ),
         act: (bloc) => bloc.add(LoadMoreSearchResultsEvent()),
@@ -330,7 +330,7 @@ void main() {
           query: 'batman',
           currentPage: 2,
           hasMorePages: true,
-          isLoadingMore: false,
+
           errorMessage: null,
         ),
         act: (bloc) => bloc.add(ClearSearchEvent()),
@@ -358,7 +358,7 @@ void main() {
           query: 'batman',
           currentPage: 1,
           hasMorePages: true,
-          isLoadingMore: false,
+
           errorMessage: 'Previous error',
         ),
         act: (bloc) => bloc.add(RetrySearchEvent()),

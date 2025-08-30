@@ -222,13 +222,17 @@ void main() {
           movies: testMovies,
           currentPage: 1,
           hasMorePages: true,
-          isLoadingMore: false,
+
           errorMessage: null,
         ),
         act: (bloc) => bloc.add(LoadMoreMoviesEvent()),
         expect: () => [
           isA<MoviesState>()
-              .having((state) => state.status, 'status', MoviesStatus.success)
+              .having(
+                (state) => state.status,
+                'status',
+                MoviesStatus.loadingMore,
+              )
               .having((state) => state.movies.length, 'movies length', 2)
               .having((state) => state.currentPage, 'currentPage', 1)
               .having((state) => state.hasMorePages, 'hasMorePages', true)
@@ -258,13 +262,17 @@ void main() {
           movies: testMovies,
           currentPage: 1,
           hasMorePages: true,
-          isLoadingMore: false,
+
           errorMessage: null,
         ),
         act: (bloc) => bloc.add(LoadMoreMoviesEvent()),
         expect: () => [
           isA<MoviesState>()
-              .having((state) => state.status, 'status', MoviesStatus.success)
+              .having(
+                (state) => state.status,
+                'status',
+                MoviesStatus.loadingMore,
+              )
               .having((state) => state.movies.length, 'movies length', 2)
               .having((state) => state.isLoadingMore, 'isLoadingMore', true),
           isA<MoviesState>()
@@ -287,7 +295,7 @@ void main() {
           movies: testMovies,
           currentPage: 10,
           hasMorePages: false,
-          isLoadingMore: false,
+
           errorMessage: null,
         ),
         act: (bloc) => bloc.add(LoadMoreMoviesEvent()),
@@ -301,11 +309,11 @@ void main() {
         'should not load more when already loading more',
         build: () => moviesBloc,
         seed: () => MoviesState(
-          status: MoviesStatus.success,
+          status: MoviesStatus.loadingMore,
           movies: testMovies,
           currentPage: 1,
           hasMorePages: true,
-          isLoadingMore: true,
+
           errorMessage: null,
         ),
         act: (bloc) => bloc.add(LoadMoreMoviesEvent()),
@@ -330,7 +338,7 @@ void main() {
           movies: testMovies,
           currentPage: 3,
           hasMorePages: true,
-          isLoadingMore: false,
+
           errorMessage: null,
         ),
         act: (bloc) => bloc.add(RefreshMoviesEvent()),
@@ -372,7 +380,7 @@ void main() {
           movies: [], // No data, so should dispatch LoadMoviesEvent
           currentPage: 1,
           hasMorePages: true,
-          isLoadingMore: false,
+
           errorMessage: 'Previous error',
         ),
         act: (bloc) => bloc.add(RetryLoadingMoviesEvent()),
@@ -439,14 +447,18 @@ void main() {
               testMovies, // Has data, so should dispatch LoadMoreMoviesEvent
           currentPage: 1,
           hasMorePages: true,
-          isLoadingMore: false,
+
           errorMessage: 'Previous error',
         ),
         act: (bloc) => bloc.add(RetryLoadingMoviesEvent()),
         expect: () => [
           // Same as LoadMoreMoviesEvent since RetryLoadingMoviesEvent dispatches LoadMoreMoviesEvent
           isA<MoviesState>()
-              .having((state) => state.status, 'status', MoviesStatus.error)
+              .having(
+                (state) => state.status,
+                'status',
+                MoviesStatus.loadingMore,
+              )
               .having((state) => state.movies.length, 'movies length', 2)
               .having((state) => state.currentPage, 'currentPage', 1)
               .having((state) => state.hasMorePages, 'hasMorePages', true)
