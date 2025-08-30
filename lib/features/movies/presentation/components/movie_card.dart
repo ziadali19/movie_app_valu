@@ -4,22 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_valu/core/theming/colors.dart';
 import 'package:movie_app_valu/core/theming/styles.dart';
 import 'package:movie_app_valu/core/helpers/spacing.dart';
+import 'package:movie_app_valu/features/favorites/presentation/components/favorite_button.dart';
 
 import '../../data/models/movie.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
   final VoidCallback? onTap;
-  final VoidCallback? onFavoritePressed;
-  final bool isFavorite;
 
-  const MovieCard({
-    super.key,
-    required this.movie,
-    this.onTap,
-    this.onFavoritePressed,
-    this.isFavorite = false,
-  });
+  const MovieCard({super.key, required this.movie, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +32,7 @@ class MovieCard extends StatelessWidget {
           ],
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Movie Poster
             _buildPosterImage(),
@@ -90,7 +84,7 @@ class MovieCard extends StatelessWidget {
       ),
       child: SizedBox(
         width: 100.w,
-        height: 140.h,
+        height: 178.h,
         child: CachedNetworkImage(
           imageUrl: movie.fullPosterUrl,
           fit: BoxFit.cover,
@@ -182,31 +176,7 @@ class MovieCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Favorite Button
-        if (onFavoritePressed != null)
-          GestureDetector(
-            onTap: onFavoritePressed,
-            child: Container(
-              padding: EdgeInsets.all(8.w),
-              decoration: BoxDecoration(
-                color: isFavorite
-                    ? ColorsManager.primary.withOpacity(0.2)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(
-                  color: isFavorite
-                      ? ColorsManager.primary
-                      : ColorsManager.textSecondary.withOpacity(0.3),
-                ),
-              ),
-              child: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: isFavorite
-                    ? ColorsManager.primary
-                    : ColorsManager.textSecondary,
-                size: 18.sp,
-              ),
-            ),
-          ),
+        FavoriteButton(movie: movie, size: 20.w),
 
         // More Info Button
         GestureDetector(

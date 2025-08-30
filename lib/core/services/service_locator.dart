@@ -1,5 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:movie_app_valu/core/network/dio_helper.dart';
+import 'package:movie_app_valu/features/favorites/controller/bloc/favorites_bloc.dart';
+import 'package:movie_app_valu/features/favorites/data/local_data_source/favorites_local_data_source.dart';
+import 'package:movie_app_valu/features/favorites/data/repository/favorites_repository.dart';
 import 'package:movie_app_valu/features/main-navigation/controller/bloc/main_navigation_bloc.dart';
 import 'package:movie_app_valu/features/movie_details/controller/bloc/movie_details_bloc.dart';
 import 'package:movie_app_valu/features/movie_details/data/remote_data_source/movie_details_remote_data_source.dart';
@@ -26,6 +29,9 @@ class ServiceLocator {
 
     // Movie Details Feature Dependencies
     _registerMovieDetailsDependencies();
+
+    // Favorites Feature Dependencies
+    _registerFavoritesDependencies();
   }
 
   static void _registerNavigationDependencies() {
@@ -75,6 +81,22 @@ class ServiceLocator {
     // Register MovieDetailsRemoteDataSource as LazySingleton
     getIt.registerLazySingleton<BaseMovieDetailsRemoteDataSource>(
       () => MovieDetailsRemoteDataSource(DioHelper.instance),
+    );
+  }
+
+  static void _registerFavoritesDependencies() {
+    // Register FavoritesBloc as LazySingleton (single instance across app)
+    // This allows sharing favorite status across the entire app
+    getIt.registerLazySingleton<FavoritesBloc>(() => FavoritesBloc(getIt()));
+
+    // Register FavoritesRepository as LazySingleton (single instance)
+    getIt.registerLazySingleton<BaseFavoritesRepository>(
+      () => FavoritesRepository(getIt()),
+    );
+
+    // Register FavoritesLocalDataSource as LazySingleton
+    getIt.registerLazySingleton<BaseFavoritesLocalDataSource>(
+      () => FavoritesLocalDataSource(),
     );
   }
 }

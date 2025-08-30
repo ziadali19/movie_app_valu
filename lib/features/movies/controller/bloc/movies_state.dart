@@ -8,7 +8,6 @@ class MoviesState {
   final String? errorMessage;
   final int currentPage;
   final bool hasMorePages;
-  final bool isLoadingMore;
 
   const MoviesState({
     this.status = MoviesStatus.initial,
@@ -16,7 +15,6 @@ class MoviesState {
     this.errorMessage,
     this.currentPage = 1,
     this.hasMorePages = true,
-    this.isLoadingMore = false,
   });
 
   MoviesState copyWith({
@@ -25,7 +23,6 @@ class MoviesState {
     String? errorMessage,
     int? currentPage,
     bool? hasMorePages,
-    bool? isLoadingMore,
   }) {
     return MoviesState(
       status: status ?? this.status,
@@ -33,7 +30,6 @@ class MoviesState {
       errorMessage: errorMessage ?? this.errorMessage,
       currentPage: currentPage ?? this.currentPage,
       hasMorePages: hasMorePages ?? this.hasMorePages,
-      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     );
   }
 
@@ -43,6 +39,7 @@ class MoviesState {
   bool get hasData => movies.isNotEmpty;
   bool get isInitial => status == MoviesStatus.initial;
   bool get isSuccess => status == MoviesStatus.success;
+  bool get isLoadingMore => status == MoviesStatus.loadingMore;
   bool get canLoadMore => hasMorePages && !isLoadingMore && !isLoading;
 
   @override
@@ -54,8 +51,7 @@ class MoviesState {
           movies == other.movies &&
           errorMessage == other.errorMessage &&
           currentPage == other.currentPage &&
-          hasMorePages == other.hasMorePages &&
-          isLoadingMore == other.isLoadingMore;
+          hasMorePages == other.hasMorePages;
 
   @override
   int get hashCode =>
@@ -63,11 +59,10 @@ class MoviesState {
       movies.hashCode ^
       errorMessage.hashCode ^
       currentPage.hashCode ^
-      hasMorePages.hashCode ^
-      isLoadingMore.hashCode;
+      hasMorePages.hashCode;
 
   @override
   String toString() {
-    return 'MoviesState{status: $status, moviesCount: ${movies.length}, currentPage: $currentPage, hasMorePages: $hasMorePages, isLoadingMore: $isLoadingMore}';
+    return 'MoviesState{status: $status, moviesCount: ${movies.length}, currentPage: $currentPage, hasMorePages: $hasMorePages}';
   }
 }

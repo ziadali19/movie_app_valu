@@ -13,4 +13,7 @@ class ColorsManager {
   static const Color cardBackground = Color(
     0xFF2A2A2A,
   ); // Movie card background
+  static const Color accentRed = Color(
+    0xFFE50914,
+  ); // Same as primary for consistency
 }

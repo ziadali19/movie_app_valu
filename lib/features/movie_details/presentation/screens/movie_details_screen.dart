@@ -56,6 +56,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
           if (state.hasError && !state.hasData) {
             return AppErrorView(
+              isFromMovieDetails: true,
               message: state.errorMessage ?? 'Failed to load movie details',
               onRetry: () {
                 context.read<MovieDetailsBloc>().add(
@@ -84,15 +85,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         verticalSpace(24.h),
                         AdditionalInfoSection(movie: movie),
                         verticalSpace(32.h),
-                        FavoriteButton(
-                          onPressed: () {
-                            showSnackBar(
-                              'Favorites feature coming soon!',
-                              context,
-                              true,
-                            );
-                          },
-                        ),
+                        MovieDetailsFavoriteButton(movieDetails: movie),
                         verticalSpace(32.h),
                       ],
                     ),

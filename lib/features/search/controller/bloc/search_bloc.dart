@@ -80,7 +80,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       return;
     }
 
-    emit(state.copyWith(isLoadingMore: true));
+    emit(state.copyWith(status: SearchStatus.loadingMore));
 
     final nextPage = state.currentPage + 1;
     final result = await repository.searchMovies(
@@ -92,7 +92,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       (error) => emit(
         state.copyWith(
           status: SearchStatus.error,
-          isLoadingMore: false,
+
           errorMessage: error.message ?? 'Failed to load more results',
         ),
       ),
@@ -157,7 +157,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           movies: isLoadingMore ? [...state.movies, ...newMovies] : newMovies,
           currentPage: currentPage,
           hasMorePages: hasMorePages,
-          isLoadingMore: false,
+
           errorMessage: null,
         ),
       );
