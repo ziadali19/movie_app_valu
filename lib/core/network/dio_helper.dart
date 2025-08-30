@@ -24,10 +24,8 @@ class DioHelper {
     dio.interceptors.addAll([
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          options.headers.addAll({
-            'language': 'en-US',
-            'Authorization': 'Bearer ${AppConstants.userToken}',
-          });
+          options.headers.addAll({'language': 'en-US'});
+          options.queryParameters.addAll({'api_key': AppConstants.apiKey});
           return handler.next(options);
         },
       ),
@@ -50,7 +48,7 @@ class DioHelper {
     Response res = await dio.post(
       path,
       data: body,
-      queryParameters: queryParameters ?? {},
+      queryParameters: queryParameters,
     );
     return res;
   }
@@ -64,7 +62,7 @@ class DioHelper {
     Response res = await dio.put(
       path,
       data: body,
-      queryParameters: queryParameters ?? {},
+      queryParameters: queryParameters,
     );
     return res;
   }
@@ -78,7 +76,7 @@ class DioHelper {
     Response res = await dio.patch(
       path,
       data: body,
-      queryParameters: queryParameters ?? {},
+      queryParameters: queryParameters,
     );
     return res;
   }
@@ -92,7 +90,7 @@ class DioHelper {
     Response res = await dio.delete(
       path,
       data: body,
-      queryParameters: queryParameters ?? {},
+      queryParameters: queryParameters,
     );
     return res;
   }
@@ -106,7 +104,7 @@ class DioHelper {
     Response res = await dio.get(
       path,
       data: body,
-      queryParameters: queryParameters ?? {},
+      queryParameters: queryParameters,
     );
     return res;
   }
