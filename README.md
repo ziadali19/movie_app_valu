@@ -61,7 +61,7 @@ A production-quality Flutter application that showcases modern mobile developmen
 
 ## 🏗️ Architecture Excellence
 
-### Clean Architecture Implementation
+### Feature-Based Architecture with Clean Principles
 
 📁 Project Structure
 
@@ -158,7 +158,7 @@ lib/
 
 ### 🎯 Architectural Patterns Used
 
-- **🏛️ Clean Architecture**: Separation of presentation, business logic, and data layers
+- **🏛️ Feature-Based Architecture with Clean Principles**: Separation of presentation, business logic, and data layers
 - **🔄 BLoC Pattern**: Predictable state management with reactive programming
 - **🗂️ Repository Pattern**: Abstraction of data sources with Either pattern
 - **💉 Dependency Injection**: GetIt for loose coupling and testability
@@ -416,7 +416,7 @@ mockito: ^5.4.2 # Mocking framework
 
 ## 🎯 Architectural Decisions & Trade-offs
 
-### Why Clean Architecture?
+### Why Feature-Based Architecture with Clean Principles?
 
 - **Scalability**: Easy to add new features without affecting existing code
 - **Testability**: Clear separation allows comprehensive unit testing
