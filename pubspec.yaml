@@ -15,7 +15,6 @@ dependencies:
   bloc:
   get_it:
   intl:
-  flutter_native_splash:
   dio:
   cached_network_image:
   shimmer:
