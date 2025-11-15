@@ -10,13 +10,13 @@ abstract class BaseFavoritesRepository {
   Future<Either<ApiErrorModel, List<FavoriteMovie>>> getAllFavorites();
   Future<Either<ApiErrorModel, void>> addToFavorites(Movie movie);
   Future<Either<ApiErrorModel, void>> addMovieDetailsToFavorites(
-    MovieDetails movieDetails,
+    MovieDetailsModel movieDetails,
   );
   Future<Either<ApiErrorModel, void>> removeFromFavorites(int movieId);
   Future<Either<ApiErrorModel, bool>> isFavorite(int movieId);
   Future<Either<ApiErrorModel, void>> toggleFavorite(Movie movie);
   Future<Either<ApiErrorModel, void>> toggleFavoriteFromDetails(
-    MovieDetails movieDetails,
+    MovieDetailsModel movieDetails,
   );
   Future<Either<ApiErrorModel, void>> clearAllFavorites();
   Future<Either<ApiErrorModel, int>> getFavoritesCount();
@@ -57,7 +57,7 @@ class FavoritesRepository implements BaseFavoritesRepository {
 
   @override
   Future<Either<ApiErrorModel, void>> addMovieDetailsToFavorites(
-    MovieDetails movieDetails,
+    MovieDetailsModel movieDetails,
   ) async {
     try {
       final favoriteMovie = FavoriteMovie.fromMovieDetails(movieDetails);
@@ -122,7 +122,7 @@ class FavoritesRepository implements BaseFavoritesRepository {
 
   @override
   Future<Either<ApiErrorModel, void>> toggleFavoriteFromDetails(
-    MovieDetails movieDetails,
+    MovieDetailsModel movieDetails,
   ) async {
     try {
       final isFavoriteResult = await localDataSource.isFavorite(

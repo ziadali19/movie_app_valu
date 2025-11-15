@@ -1,11 +1,10 @@
-class Genre {
-  final int id;
-  final String name;
+import 'package:movie_app_valu/features/movie_details/domain/entities/movie_details_entity.dart';
 
-  const Genre({required this.id, required this.name});
+class GenreModel extends Genere {
+  const GenreModel({required super.id, required super.name});
 
-  factory Genre.fromJson(Map<String, dynamic> json) {
-    return Genre(
+  factory GenreModel.fromJson(Map<String, dynamic> json) {
+    return GenreModel(
       id: json['id'] as int? ?? 0,
       name: json['name'] as String? ?? '',
     );
@@ -18,28 +17,23 @@ class Genre {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is Genre && other.id == id && other.name == name;
+    return other is GenreModel && other.id == id && other.name == name;
   }
 
   @override
   int get hashCode => Object.hash(id, name);
 }
 
-class ProductionCompany {
-  final int id;
-  final String? logoPath;
-  final String name;
-  final String originCountry;
-
-  const ProductionCompany({
-    required this.id,
-    this.logoPath,
-    required this.name,
-    required this.originCountry,
+class ProductionCompanyModel extends ProductionCompany {
+  const ProductionCompanyModel({
+    required super.id,
+    required super.name,
+    required super.originCountry,
+    super.logoPath,
   });
 
-  factory ProductionCompany.fromJson(Map<String, dynamic> json) {
-    return ProductionCompany(
+  factory ProductionCompanyModel.fromJson(Map<String, dynamic> json) {
+    return ProductionCompanyModel(
       id: json['id'] as int? ?? 0,
       logoPath: json['logo_path'] as String?,
       name: json['name'] as String? ?? '',
@@ -59,7 +53,7 @@ class ProductionCompany {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is ProductionCompany &&
+    return other is ProductionCompanyModel &&
         other.id == id &&
         other.logoPath == logoPath &&
         other.name == name &&
@@ -70,14 +64,11 @@ class ProductionCompany {
   int get hashCode => Object.hash(id, logoPath, name, originCountry);
 }
 
-class ProductionCountry {
-  final String iso31661;
-  final String name;
+class ProductionCountryModel extends ProductionCountry {
+  const ProductionCountryModel({required super.iso31661, required super.name});
 
-  const ProductionCountry({required this.iso31661, required this.name});
-
-  factory ProductionCountry.fromJson(Map<String, dynamic> json) {
-    return ProductionCountry(
+  factory ProductionCountryModel.fromJson(Map<String, dynamic> json) {
+    return ProductionCountryModel(
       iso31661: json['iso_3166_1'] as String? ?? '',
       name: json['name'] as String? ?? '',
     );
@@ -90,7 +81,7 @@ class ProductionCountry {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is ProductionCountry &&
+    return other is ProductionCountryModel &&
         other.iso31661 == iso31661 &&
         other.name == name;
   }
@@ -99,19 +90,15 @@ class ProductionCountry {
   int get hashCode => Object.hash(iso31661, name);
 }
 
-class SpokenLanguage {
-  final String englishName;
-  final String iso6391;
-  final String name;
-
-  const SpokenLanguage({
-    required this.englishName,
-    required this.iso6391,
-    required this.name,
+class SpokenLanguageModel extends SpokenLanguage {
+  const SpokenLanguageModel({
+    required super.englishName,
+    required super.iso6391,
+    required super.name,
   });
 
-  factory SpokenLanguage.fromJson(Map<String, dynamic> json) {
-    return SpokenLanguage(
+  factory SpokenLanguageModel.fromJson(Map<String, dynamic> json) {
+    return SpokenLanguageModel(
       englishName: json['english_name'] as String? ?? '',
       iso6391: json['iso_639_1'] as String? ?? '',
       name: json['name'] as String? ?? '',
@@ -125,7 +112,7 @@ class SpokenLanguage {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is SpokenLanguage &&
+    return other is SpokenLanguageModel &&
         other.englishName == englishName &&
         other.iso6391 == iso6391 &&
         other.name == name;
@@ -135,65 +122,37 @@ class SpokenLanguage {
   int get hashCode => Object.hash(englishName, iso6391, name);
 }
 
-class MovieDetails {
-  final int id;
-  final String title;
-  final String overview;
-  final String? posterPath;
-  final String? backdropPath;
-  final String releaseDate;
-  final double voteAverage;
-  final int voteCount;
-  final int runtime;
-  final List<Genre> genres;
-  final String originalLanguage;
-  final String originalTitle;
-  final double popularity;
-  final bool adult;
-  final bool video;
-  final String? tagline;
-  final String status;
-  final int? budget;
-  final int? revenue;
-
-  final String? homepage;
-  final String? imdbId;
-  final List<String> originCountry;
-  final List<ProductionCompany> productionCompanies;
-  final List<ProductionCountry> productionCountries;
-  final List<SpokenLanguage> spokenLanguages;
-
-  const MovieDetails({
-    required this.id,
-    required this.title,
-    required this.overview,
-    this.posterPath,
-    this.backdropPath,
-    required this.releaseDate,
-    required this.voteAverage,
-    required this.voteCount,
-    required this.runtime,
-    required this.genres,
-    required this.originalLanguage,
-    required this.originalTitle,
-    required this.popularity,
-    required this.adult,
-    required this.video,
-    this.tagline,
-    required this.status,
-    this.budget,
-    this.revenue,
-
-    this.homepage,
-    this.imdbId,
-    required this.originCountry,
-    required this.productionCompanies,
-    required this.productionCountries,
-    required this.spokenLanguages,
+class MovieDetailsModel extends MovieDetails {
+  MovieDetailsModel({
+    required super.id,
+    required super.title,
+    required super.overview,
+    required super.posterPath,
+    required super.backdropPath,
+    required super.releaseDate,
+    required super.voteAverage,
+    required super.voteCount,
+    required super.runtime,
+    required super.genres,
+    required super.originalLanguage,
+    required super.originalTitle,
+    required super.popularity,
+    required super.adult,
+    required super.video,
+    required super.tagline,
+    required super.status,
+    required super.budget,
+    required super.revenue,
+    required super.homepage,
+    required super.imdbId,
+    required super.originCountry,
+    required super.productionCompanies,
+    required super.productionCountries,
+    required super.spokenLanguages,
   });
 
-  factory MovieDetails.fromJson(Map<String, dynamic> json) {
-    return MovieDetails(
+  factory MovieDetailsModel.fromJson(Map<String, dynamic> json) {
+    return MovieDetailsModel(
       id: json['id'] as int? ?? 0,
       title: json['title'] as String? ?? '',
       overview: json['overview'] as String? ?? '',
@@ -207,7 +166,7 @@ class MovieDetails {
           (json['genres'] as List<dynamic>?)
               ?.map(
                 (genreJson) =>
-                    Genre.fromJson(genreJson as Map<String, dynamic>),
+                    GenreModel.fromJson(genreJson as Map<String, dynamic>),
               )
               .toList() ??
           [],
@@ -230,7 +189,7 @@ class MovieDetails {
       productionCompanies:
           (json['production_companies'] as List<dynamic>?)
               ?.map(
-                (companyJson) => ProductionCompany.fromJson(
+                (companyJson) => ProductionCompanyModel.fromJson(
                   companyJson as Map<String, dynamic>,
                 ),
               )
@@ -239,7 +198,7 @@ class MovieDetails {
       productionCountries:
           (json['production_countries'] as List<dynamic>?)
               ?.map(
-                (countryJson) => ProductionCountry.fromJson(
+                (countryJson) => ProductionCountryModel.fromJson(
                   countryJson as Map<String, dynamic>,
                 ),
               )
@@ -248,7 +207,7 @@ class MovieDetails {
       spokenLanguages:
           (json['spoken_languages'] as List<dynamic>?)
               ?.map(
-                (languageJson) => SpokenLanguage.fromJson(
+                (languageJson) => SpokenLanguageModel.fromJson(
                   languageJson as Map<String, dynamic>,
                 ),
               )
@@ -268,7 +227,7 @@ class MovieDetails {
       'vote_average': voteAverage,
       'vote_count': voteCount,
       'runtime': runtime,
-      'genres': genres.map((genre) => genre.toJson()).toList(),
+      'genres': genres.map((genre) => (genre as GenreModel).toJson()).toList(),
       'original_language': originalLanguage,
       'original_title': originalTitle,
       'popularity': popularity,
@@ -283,13 +242,13 @@ class MovieDetails {
       'imdb_id': imdbId,
       'origin_country': originCountry,
       'production_companies': productionCompanies
-          .map((company) => company.toJson())
+          .map((company) => (company as ProductionCompanyModel).toJson())
           .toList(),
       'production_countries': productionCountries
-          .map((country) => country.toJson())
+          .map((country) => (country as ProductionCountryModel).toJson())
           .toList(),
       'spoken_languages': spokenLanguages
-          .map((language) => language.toJson())
+          .map((language) => (language as SpokenLanguageModel).toJson())
           .toList(),
     };
   }
@@ -334,7 +293,7 @@ class MovieDetails {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is MovieDetails &&
+    return other is MovieDetailsModel &&
         other.id == id &&
         other.title == title &&
         other.overview == overview &&

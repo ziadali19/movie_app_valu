@@ -5,27 +5,27 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:movie_app_valu/core/network/failure_model.dart';
 import 'package:movie_app_valu/core/network/generic_response.dart';
-import 'package:movie_app_valu/features/movie_details/controller/bloc/movie_details_bloc.dart';
-import 'package:movie_app_valu/features/movie_details/controller/bloc/movie_details_event.dart';
-import 'package:movie_app_valu/features/movie_details/controller/bloc/movie_details_state.dart';
+import 'package:movie_app_valu/features/movie_details/presentation/controller/bloc/movie_details_bloc.dart';
+import 'package:movie_app_valu/features/movie_details/presentation/controller/bloc/movie_details_event.dart';
+import 'package:movie_app_valu/features/movie_details/presentation/controller/bloc/movie_details_state.dart';
 import 'package:movie_app_valu/features/movie_details/data/models/movie_details.dart';
-import 'package:movie_app_valu/features/movie_details/data/repository/movie_details_repository.dart';
+import 'package:movie_app_valu/features/movie_details/domain/usecases/get_movie_details_usecase.dart';
 
 import 'movie_details_bloc_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<BaseMovieDetailsRepository>()])
+@GenerateNiceMocks([MockSpec<GetMovieDetailsUsecase>()])
 void main() {
   group('MovieDetailsBloc Tests', () {
-    late MockBaseMovieDetailsRepository mockRepository;
+    late MockGetMovieDetailsUsecase mockGetMovieDetailsUsecase;
     late MovieDetailsBloc movieDetailsBloc;
-    late MovieDetails testMovieDetails;
-    late ApiResponse<MovieDetails> testApiResponse;
+    late MovieDetailsModel testMovieDetails;
+    late ApiResponse<MovieDetailsModel> testApiResponse;
 
     setUp(() {
-      mockRepository = MockBaseMovieDetailsRepository();
-      movieDetailsBloc = MovieDetailsBloc(mockRepository);
+      mockGetMovieDetailsUsecase = MockGetMovieDetailsUsecase();
+      movieDetailsBloc = MovieDetailsBloc(mockGetMovieDetailsUsecase);
 
-      testMovieDetails = const MovieDetails(
+      testMovieDetails = MovieDetailsModel(
         id: 1151334,
         title: 'Eenie Meanie',
         overview:
@@ -37,8 +37,8 @@ void main() {
         voteCount: 79,
         runtime: 106,
         genres: [
-          Genre(id: 53, name: 'Thriller'),
-          Genre(id: 28, name: 'Action'),
+          GenreModel(id: 53, name: 'Thriller'),
+          GenreModel(id: 28, name: 'Action'),
         ],
         originalLanguage: 'en',
         originalTitle: 'Eenie Meanie',
@@ -53,7 +53,7 @@ void main() {
         imdbId: 'tt15514498',
         originCountry: ['US'],
         productionCompanies: [
-          ProductionCompany(
+          ProductionCompanyModel(
             id: 127928,
             logoPath: '/h0rjX5vjW5r8yEnUBStFarjcLT4.png',
             name: '20th Century Studios',
@@ -61,10 +61,13 @@ void main() {
           ),
         ],
         productionCountries: [
-          ProductionCountry(iso31661: 'US', name: 'United States of America'),
+          ProductionCountryModel(
+            iso31661: 'US',
+            name: 'United States of America',
+          ),
         ],
         spokenLanguages: [
-          SpokenLanguage(
+          SpokenLanguageModel(
             englishName: 'English',
             iso6391: 'en',
             name: 'English',
@@ -72,7 +75,7 @@ void main() {
         ],
       );
 
-      testApiResponse = ApiResponse<MovieDetails>.fromTMDBSingle(
+      testApiResponse = ApiResponse<MovieDetailsModel>.fromTMDBSingle(
         results: testMovieDetails,
         statusCode: 200,
       );
@@ -103,7 +106,7 @@ void main() {
         'should emit [loading, success] when repository returns success',
         build: () {
           when(
-            mockRepository.getMovieDetails(movieId: 1151334),
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
           ).thenAnswer((_) async => Right(testApiResponse));
           return movieDetailsBloc;
         },
@@ -133,14 +136,18 @@ void main() {
               .having((state) => state.movieId, 'movieId', 1151334),
         ],
         verify: (_) {
-          verify(mockRepository.getMovieDetails(movieId: 1151334)).called(1);
+          verify(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
+          ).called(1);
         },
       );
 
       blocTest<MovieDetailsBloc, MovieDetailsState>(
         'should emit [loading, error] when repository returns error',
         build: () {
-          when(mockRepository.getMovieDetails(movieId: 1151334)).thenAnswer(
+          when(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
+          ).thenAnswer(
             (_) async =>
                 Left(ApiErrorModel(message: 'Failed to load movie details')),
           );
@@ -171,7 +178,9 @@ void main() {
               .having((state) => state.movieId, 'movieId', 1151334),
         ],
         verify: (_) {
-          verify(mockRepository.getMovieDetails(movieId: 1151334)).called(1);
+          verify(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
+          ).called(1);
         },
       );
 
@@ -179,7 +188,7 @@ void main() {
         'should emit [loading, error] with default message when error message is null',
         build: () {
           when(
-            mockRepository.getMovieDetails(movieId: 1151334),
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
           ).thenAnswer((_) async => Left(ApiErrorModel(message: null)));
           return movieDetailsBloc;
         },
@@ -203,7 +212,9 @@ void main() {
               ),
         ],
         verify: (_) {
-          verify(mockRepository.getMovieDetails(movieId: 1151334)).called(1);
+          verify(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
+          ).called(1);
         },
       );
 
@@ -214,13 +225,14 @@ void main() {
             id: 99999,
             title: 'Different Movie',
           );
-          final differentApiResponse = ApiResponse<MovieDetails>.fromTMDBSingle(
-            results: differentMovieDetails,
-            statusCode: 200,
-          );
+          final differentApiResponse =
+              ApiResponse<MovieDetailsModel>.fromTMDBSingle(
+                results: differentMovieDetails,
+                statusCode: 200,
+              );
 
           when(
-            mockRepository.getMovieDetails(movieId: 99999),
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 99999),
           ).thenAnswer((_) async => Right(differentApiResponse));
           return movieDetailsBloc;
         },
@@ -252,7 +264,9 @@ void main() {
               .having((state) => state.movieId, 'movieId', 99999),
         ],
         verify: (_) {
-          verify(mockRepository.getMovieDetails(movieId: 99999)).called(1);
+          verify(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 99999),
+          ).called(1);
         },
       );
 
@@ -260,7 +274,7 @@ void main() {
         'should clear previous error when loading new movie details',
         build: () {
           when(
-            mockRepository.getMovieDetails(movieId: 1151334),
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
           ).thenAnswer((_) async => Right(testApiResponse));
           return movieDetailsBloc;
         },
@@ -293,7 +307,9 @@ void main() {
               .having((state) => state.errorMessage, 'errorMessage', null),
         ],
         verify: (_) {
-          verify(mockRepository.getMovieDetails(movieId: 1151334)).called(1);
+          verify(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
+          ).called(1);
         },
       );
     });
@@ -303,7 +319,7 @@ void main() {
         'should dispatch LoadMovieDetailsEvent with the same movie ID',
         build: () {
           when(
-            mockRepository.getMovieDetails(movieId: 1151334),
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
           ).thenAnswer((_) async => Right(testApiResponse));
           return movieDetailsBloc;
         },
@@ -330,7 +346,9 @@ void main() {
               ),
         ],
         verify: (_) {
-          verify(mockRepository.getMovieDetails(movieId: 1151334)).called(1);
+          verify(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
+          ).called(1);
         },
       );
 
@@ -338,7 +356,7 @@ void main() {
         'should handle retry after error correctly',
         build: () {
           when(
-            mockRepository.getMovieDetails(movieId: 1151334),
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
           ).thenAnswer((_) async => Right(testApiResponse));
           return movieDetailsBloc;
         },
@@ -372,7 +390,9 @@ void main() {
               .having((state) => state.errorMessage, 'errorMessage', null),
         ],
         verify: (_) {
-          verify(mockRepository.getMovieDetails(movieId: 1151334)).called(1);
+          verify(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
+          ).called(1);
         },
       );
 
@@ -383,13 +403,14 @@ void main() {
             id: 99999,
             title: 'Different Movie',
           );
-          final differentApiResponse = ApiResponse<MovieDetails>.fromTMDBSingle(
-            results: differentMovieDetails,
-            statusCode: 200,
-          );
+          final differentApiResponse =
+              ApiResponse<MovieDetailsModel>.fromTMDBSingle(
+                results: differentMovieDetails,
+                statusCode: 200,
+              );
 
           when(
-            mockRepository.getMovieDetails(movieId: 99999),
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 99999),
           ).thenAnswer((_) async => Right(differentApiResponse));
           return movieDetailsBloc;
         },
@@ -425,7 +446,9 @@ void main() {
               ),
         ],
         verify: (_) {
-          verify(mockRepository.getMovieDetails(movieId: 99999)).called(1);
+          verify(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 99999),
+          ).called(1);
         },
       );
     });
@@ -496,19 +519,20 @@ void main() {
         'should handle multiple sequential movie loads correctly',
         build: () {
           when(
-            mockRepository.getMovieDetails(movieId: 1151334),
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
           ).thenAnswer((_) async => Right(testApiResponse));
 
           final differentMovieDetails = testMovieDetails.copyWith(
             id: 99999,
             title: 'Different Movie',
           );
-          final differentApiResponse = ApiResponse<MovieDetails>.fromTMDBSingle(
-            results: differentMovieDetails,
-            statusCode: 200,
-          );
+          final differentApiResponse =
+              ApiResponse<MovieDetailsModel>.fromTMDBSingle(
+                results: differentMovieDetails,
+                statusCode: 200,
+              );
           when(
-            mockRepository.getMovieDetails(movieId: 99999),
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 99999),
           ).thenAnswer((_) async => Right(differentApiResponse));
 
           return movieDetailsBloc;
@@ -564,16 +588,20 @@ void main() {
               ),
         ],
         verify: (_) {
-          verify(mockRepository.getMovieDetails(movieId: 1151334)).called(1);
-          verify(mockRepository.getMovieDetails(movieId: 99999)).called(1);
+          verify(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 1151334),
+          ).called(1);
+          verify(
+            mockGetMovieDetailsUsecase.getMovieDetails(movieId: 99999),
+          ).called(1);
         },
       );
     });
   });
 }
 
-extension MovieDetailsCopyWithTest on MovieDetails {
-  MovieDetails copyWith({
+extension MovieDetailsCopyWithTest on MovieDetailsModel {
+  MovieDetailsModel copyWith({
     int? id,
     String? title,
     String? overview,
@@ -583,7 +611,7 @@ extension MovieDetailsCopyWithTest on MovieDetails {
     double? voteAverage,
     int? voteCount,
     int? runtime,
-    List<Genre>? genres,
+    List<GenreModel>? genres,
     String? originalLanguage,
     String? originalTitle,
     double? popularity,
@@ -596,11 +624,11 @@ extension MovieDetailsCopyWithTest on MovieDetails {
     String? homepage,
     String? imdbId,
     List<String>? originCountry,
-    List<ProductionCompany>? productionCompanies,
-    List<ProductionCountry>? productionCountries,
-    List<SpokenLanguage>? spokenLanguages,
+    List<ProductionCompanyModel>? productionCompanies,
+    List<ProductionCountryModel>? productionCountries,
+    List<SpokenLanguageModel>? spokenLanguages,
   }) {
-    return MovieDetails(
+    return MovieDetailsModel(
       id: id ?? this.id,
       title: title ?? this.title,
       overview: overview ?? this.overview,

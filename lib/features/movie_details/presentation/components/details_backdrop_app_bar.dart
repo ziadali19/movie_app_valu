@@ -7,7 +7,7 @@ import '../../../../core/widgets/app_loading.dart';
 import '../../data/models/movie_details.dart';
 
 class DetailsBackdropAppBar extends StatelessWidget {
-  final MovieDetails movie;
+  final MovieDetailsModel movie;
 
   const DetailsBackdropAppBar({super.key, required this.movie});
 

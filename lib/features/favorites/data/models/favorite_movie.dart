@@ -61,7 +61,7 @@ class FavoriteMovie extends HiveObject {
   }
 
   // Factory constructor from MovieDetails (for adding from details screen)
-  factory FavoriteMovie.fromMovieDetails(MovieDetails movieDetails) {
+  factory FavoriteMovie.fromMovieDetails(MovieDetailsModel movieDetails) {
     return FavoriteMovie(
       id: movieDetails.id,
       title: movieDetails.title,

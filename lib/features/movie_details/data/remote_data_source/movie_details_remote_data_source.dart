@@ -5,7 +5,9 @@ import 'package:movie_app_valu/core/network/generic_response.dart';
 import '../models/movie_details.dart';
 
 abstract class BaseMovieDetailsRemoteDataSource {
-  Future<ApiResponse<MovieDetails>> getMovieDetails({required int movieId});
+  Future<ApiResponse<MovieDetailsModel>> getMovieDetails({
+    required int movieId,
+  });
 }
 
 class MovieDetailsRemoteDataSource implements BaseMovieDetailsRemoteDataSource {
@@ -14,16 +16,16 @@ class MovieDetailsRemoteDataSource implements BaseMovieDetailsRemoteDataSource {
   MovieDetailsRemoteDataSource(this.dioHelper);
 
   @override
-  Future<ApiResponse<MovieDetails>> getMovieDetails({
+  Future<ApiResponse<MovieDetailsModel>> getMovieDetails({
     required int movieId,
   }) async {
     try {
       final response = await dioHelper.get('/movie/$movieId');
 
       final jsonData = response.data as Map<String, dynamic>;
-      final movieDetails = MovieDetails.fromJson(jsonData);
+      final movieDetails = MovieDetailsModel.fromJson(jsonData);
 
-      return ApiResponse<MovieDetails>.fromTMDBSingle(
+      return ApiResponse<MovieDetailsModel>.fromTMDBSingle(
         results: movieDetails,
         statusCode: response.statusCode!,
       );

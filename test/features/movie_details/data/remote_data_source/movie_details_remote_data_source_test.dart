@@ -84,8 +84,8 @@ void main() {
         final result = await remoteDataSource.getMovieDetails(movieId: movieId);
 
         // Assert
-        expect(result, isA<ApiResponse<MovieDetails>>());
-        expect(result.singleResult, isA<MovieDetails>());
+        expect(result, isA<ApiResponse<MovieDetailsModel>>());
+        expect(result.singleResult, isA<MovieDetailsModel>());
         expect(result.singleResult!.id, 1151334);
         expect(result.singleResult!.title, 'Eenie Meanie');
         expect(result.status, 0);

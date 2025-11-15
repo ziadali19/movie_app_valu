@@ -12,7 +12,7 @@ import 'package:movie_app_valu/features/movie_details/data/models/movie_details.
 
 class FavoriteButton extends StatefulWidget {
   final Movie? movie;
-  final MovieDetails? movieDetails;
+  final MovieDetailsModel? movieDetails;
   final double size;
   final bool showBackground;
   final VoidCallback? onToggle;

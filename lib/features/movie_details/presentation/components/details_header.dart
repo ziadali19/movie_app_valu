@@ -9,7 +9,7 @@ import '../../../../core/widgets/app_loading.dart';
 import '../../data/models/movie_details.dart';
 
 class DetailsHeader extends StatelessWidget {
-  final MovieDetails movie;
+  final MovieDetailsModel movie;
 
   const DetailsHeader({super.key, required this.movie});
 

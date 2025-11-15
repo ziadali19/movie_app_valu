@@ -42,7 +42,7 @@ class _FakeApiResponse_0<T> extends _i1.SmartFake
 class MockBaseMovieDetailsRemoteDataSource extends _i1.Mock
     implements _i3.BaseMovieDetailsRemoteDataSource {
   @override
-  _i4.Future<_i2.ApiResponse<_i5.MovieDetails>> getMovieDetails(
+  _i4.Future<_i2.ApiResponse<_i5.MovieDetailsModel>> getMovieDetails(
           {required int? movieId}) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -50,8 +50,8 @@ class MockBaseMovieDetailsRemoteDataSource extends _i1.Mock
           [],
           {#movieId: movieId},
         ),
-        returnValue: _i4.Future<_i2.ApiResponse<_i5.MovieDetails>>.value(
-            _FakeApiResponse_0<_i5.MovieDetails>(
+        returnValue: _i4.Future<_i2.ApiResponse<_i5.MovieDetailsModel>>.value(
+            _FakeApiResponse_0<_i5.MovieDetailsModel>(
           this,
           Invocation.method(
             #getMovieDetails,
@@ -60,8 +60,8 @@ class MockBaseMovieDetailsRemoteDataSource extends _i1.Mock
           ),
         )),
         returnValueForMissingStub:
-            _i4.Future<_i2.ApiResponse<_i5.MovieDetails>>.value(
-                _FakeApiResponse_0<_i5.MovieDetails>(
+            _i4.Future<_i2.ApiResponse<_i5.MovieDetailsModel>>.value(
+                _FakeApiResponse_0<_i5.MovieDetailsModel>(
           this,
           Invocation.method(
             #getMovieDetails,
@@ -69,5 +69,5 @@ class MockBaseMovieDetailsRemoteDataSource extends _i1.Mock
             {#movieId: movieId},
           ),
         )),
-      ) as _i4.Future<_i2.ApiResponse<_i5.MovieDetails>>);
+      ) as _i4.Future<_i2.ApiResponse<_i5.MovieDetailsModel>>);
 }

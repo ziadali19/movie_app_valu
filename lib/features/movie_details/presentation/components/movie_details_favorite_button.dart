@@ -12,7 +12,7 @@ import '../../../favorites/controller/bloc/favorites_state.dart';
 import '../../../movie_details/data/models/movie_details.dart';
 
 class MovieDetailsFavoriteButton extends StatelessWidget {
-  final MovieDetails movieDetails;
+  final MovieDetailsModel movieDetails;
 
   const MovieDetailsFavoriteButton({super.key, required this.movieDetails});
 

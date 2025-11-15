@@ -1,13 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/repository/movie_details_repository.dart';
+import '../../../data/models/movie_details.dart';
+import '../../../domain/usecases/get_movie_details_usecase.dart';
 import 'movie_details_event.dart';
 import 'movie_details_state.dart';
 
 class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
-  final BaseMovieDetailsRepository repository;
+  final GetMovieDetailsUsecase getMovieDetailsUsecase;
 
-  MovieDetailsBloc(this.repository) : super(const MovieDetailsState()) {
+  MovieDetailsBloc(this.getMovieDetailsUsecase)
+    : super(const MovieDetailsState()) {
     on<LoadMovieDetailsEvent>(_onLoadMovieDetails);
     on<RetryLoadingMovieDetailsEvent>(_onRetryLoadingMovieDetails);
   }
@@ -24,7 +26,9 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
       ),
     );
 
-    final result = await repository.getMovieDetails(movieId: event.movieId);
+    final result = await getMovieDetailsUsecase.getMovieDetails(
+      movieId: event.movieId,
+    );
 
     result.fold(
       (error) => emit(
@@ -36,7 +40,7 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
       (apiResponse) => emit(
         state.copyWith(
           status: MovieDetailsStatus.success,
-          movieDetails: apiResponse.singleResult,
+          movieDetails: apiResponse.singleResult as MovieDetailsModel?,
           errorMessage: null,
         ),
       ),

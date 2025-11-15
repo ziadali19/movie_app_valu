@@ -4,7 +4,7 @@ import 'package:movie_app_valu/core/services/service_locator.dart';
 import 'package:movie_app_valu/features/favorites/controller/bloc/favorites_bloc.dart';
 import 'package:movie_app_valu/features/main-navigation/controller/bloc/main_navigation_bloc.dart';
 import 'package:movie_app_valu/features/main-navigation/presentation/screens/main-navigation_screen.dart';
-import 'package:movie_app_valu/features/movie_details/controller/bloc/movie_details_bloc.dart';
+import 'package:movie_app_valu/features/movie_details/presentation/controller/bloc/movie_details_bloc.dart';
 import 'package:movie_app_valu/features/movie_details/presentation/screens/movie_details_screen.dart';
 import 'package:movie_app_valu/features/movies/controller/bloc/movies_bloc.dart';
 import 'package:movie_app_valu/features/movies/presentation/screens/movies_list_screen.dart';

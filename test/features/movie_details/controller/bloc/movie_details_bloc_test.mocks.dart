@@ -3,16 +3,18 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i5;
 
-import 'package:dartz/dartz.dart' as _i2;
+import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:movie_app_valu/core/network/failure_model.dart' as _i5;
-import 'package:movie_app_valu/core/network/generic_response.dart' as _i6;
-import 'package:movie_app_valu/features/movie_details/data/models/movie_details.dart'
-    as _i7;
-import 'package:movie_app_valu/features/movie_details/data/repository/movie_details_repository.dart'
-    as _i3;
+import 'package:movie_app_valu/core/network/failure_model.dart' as _i6;
+import 'package:movie_app_valu/core/network/generic_response.dart' as _i7;
+import 'package:movie_app_valu/features/movie_details/domain/entities/movie_details_entity.dart'
+    as _i8;
+import 'package:movie_app_valu/features/movie_details/domain/repository/base_movie_details_repository.dart'
+    as _i2;
+import 'package:movie_app_valu/features/movie_details/domain/usecases/get_movie_details_usecase.dart'
+    as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -27,8 +29,9 @@ import 'package:movie_app_valu/features/movie_details/data/repository/movie_deta
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
-  _FakeEither_0(
+class _FakeBaseMovieDetailsRepository_0 extends _i1.SmartFake
+    implements _i2.BaseMovieDetailsRepository {
+  _FakeBaseMovieDetailsRepository_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -37,27 +40,50 @@ class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
         );
 }
 
-/// A class which mocks [BaseMovieDetailsRepository].
+class _FakeEither_1<L, R> extends _i1.SmartFake implements _i3.Either<L, R> {
+  _FakeEither_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+/// A class which mocks [GetMovieDetailsUsecase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockBaseMovieDetailsRepository extends _i1.Mock
-    implements _i3.BaseMovieDetailsRepository {
+class MockGetMovieDetailsUsecase extends _i1.Mock
+    implements _i4.GetMovieDetailsUsecase {
   @override
-  _i4.Future<
-      _i2.Either<
-          _i5.ApiErrorModel,
-          _i6.ApiResponse<
-              _i7.MovieDetails>>> getMovieDetails({required int? movieId}) =>
+  _i2.BaseMovieDetailsRepository get repository => (super.noSuchMethod(
+        Invocation.getter(#repository),
+        returnValue: _FakeBaseMovieDetailsRepository_0(
+          this,
+          Invocation.getter(#repository),
+        ),
+        returnValueForMissingStub: _FakeBaseMovieDetailsRepository_0(
+          this,
+          Invocation.getter(#repository),
+        ),
+      ) as _i2.BaseMovieDetailsRepository);
+
+  @override
+  _i5.Future<
+      _i3.Either<
+          _i6.ApiErrorModel,
+          _i7.ApiResponse<
+              _i8.MovieDetails>>> getMovieDetails({required int? movieId}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getMovieDetails,
           [],
           {#movieId: movieId},
         ),
-        returnValue: _i4.Future<
-                _i2.Either<_i5.ApiErrorModel,
-                    _i6.ApiResponse<_i7.MovieDetails>>>.value(
-            _FakeEither_0<_i5.ApiErrorModel, _i6.ApiResponse<_i7.MovieDetails>>(
+        returnValue: _i5.Future<
+                _i3.Either<_i6.ApiErrorModel,
+                    _i7.ApiResponse<_i8.MovieDetails>>>.value(
+            _FakeEither_1<_i6.ApiErrorModel, _i7.ApiResponse<_i8.MovieDetails>>(
           this,
           Invocation.method(
             #getMovieDetails,
@@ -65,10 +91,10 @@ class MockBaseMovieDetailsRepository extends _i1.Mock
             {#movieId: movieId},
           ),
         )),
-        returnValueForMissingStub: _i4.Future<
-                _i2.Either<_i5.ApiErrorModel,
-                    _i6.ApiResponse<_i7.MovieDetails>>>.value(
-            _FakeEither_0<_i5.ApiErrorModel, _i6.ApiResponse<_i7.MovieDetails>>(
+        returnValueForMissingStub: _i5.Future<
+                _i3.Either<_i6.ApiErrorModel,
+                    _i7.ApiResponse<_i8.MovieDetails>>>.value(
+            _FakeEither_1<_i6.ApiErrorModel, _i7.ApiResponse<_i8.MovieDetails>>(
           this,
           Invocation.method(
             #getMovieDetails,
@@ -76,6 +102,6 @@ class MockBaseMovieDetailsRepository extends _i1.Mock
             {#movieId: movieId},
           ),
         )),
-      ) as _i4.Future<
-          _i2.Either<_i5.ApiErrorModel, _i6.ApiResponse<_i7.MovieDetails>>>);
+      ) as _i5.Future<
+          _i3.Either<_i6.ApiErrorModel, _i7.ApiResponse<_i8.MovieDetails>>>);
 }

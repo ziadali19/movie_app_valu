@@ -8,6 +8,7 @@ import 'package:movie_app_valu/core/network/generic_response.dart';
 import 'package:movie_app_valu/features/movie_details/data/models/movie_details.dart';
 import 'package:movie_app_valu/features/movie_details/data/remote_data_source/movie_details_remote_data_source.dart';
 import 'package:movie_app_valu/features/movie_details/data/repository/movie_details_repository.dart';
+import 'package:movie_app_valu/features/movie_details/domain/entities/movie_details_entity.dart';
 
 import 'movie_details_repository_test.mocks.dart';
 
@@ -16,14 +17,14 @@ void main() {
   group('MovieDetailsRepository Tests', () {
     late MockBaseMovieDetailsRemoteDataSource mockRemoteDataSource;
     late MovieDetailsRepository repository;
-    late MovieDetails testMovieDetails;
-    late ApiResponse<MovieDetails> testApiResponse;
+    late MovieDetailsModel testMovieDetails;
+    late ApiResponse<MovieDetailsModel> testApiResponse;
 
     setUp(() {
       mockRemoteDataSource = MockBaseMovieDetailsRemoteDataSource();
       repository = MovieDetailsRepository(mockRemoteDataSource);
 
-      testMovieDetails = const MovieDetails(
+      testMovieDetails = MovieDetailsModel(
         id: 1151334,
         title: 'Eenie Meanie',
         overview:
@@ -35,8 +36,8 @@ void main() {
         voteCount: 79,
         runtime: 106,
         genres: [
-          Genre(id: 53, name: 'Thriller'),
-          Genre(id: 28, name: 'Action'),
+          GenreModel(id: 53, name: 'Thriller'),
+          GenreModel(id: 28, name: 'Action'),
         ],
         originalLanguage: 'en',
         originalTitle: 'Eenie Meanie',
@@ -51,7 +52,7 @@ void main() {
         imdbId: 'tt15514498',
         originCountry: ['US'],
         productionCompanies: [
-          ProductionCompany(
+          ProductionCompanyModel(
             id: 127928,
             logoPath: '/h0rjX5vjW5r8yEnUBStFarjcLT4.png',
             name: '20th Century Studios',
@@ -59,10 +60,13 @@ void main() {
           ),
         ],
         productionCountries: [
-          ProductionCountry(iso31661: 'US', name: 'United States of America'),
+          ProductionCountryModel(
+            iso31661: 'US',
+            name: 'United States of America',
+          ),
         ],
         spokenLanguages: [
-          SpokenLanguage(
+          SpokenLanguageModel(
             englishName: 'English',
             iso6391: 'en',
             name: 'English',
@@ -70,7 +74,7 @@ void main() {
         ],
       );
 
-      testApiResponse = ApiResponse<MovieDetails>.fromTMDBSingle(
+      testApiResponse = ApiResponse<MovieDetailsModel>.fromTMDBSingle(
         results: testMovieDetails,
         statusCode: 200,
       );
@@ -180,7 +184,7 @@ void main() {
         () async {
           // Arrange
           const movieId = 99999;
-          const differentMovieDetails = MovieDetails(
+          final differentMovieDetails = MovieDetailsModel(
             id: 99999,
             title: 'Different Movie',
             overview: 'Different overview',
@@ -199,12 +203,20 @@ void main() {
             productionCompanies: [],
             productionCountries: [],
             spokenLanguages: [],
+            posterPath: '',
+            backdropPath: '',
+            tagline: '',
+            budget: null,
+            revenue: null,
+            homepage: '',
+            imdbId: '',
           );
 
-          final differentApiResponse = ApiResponse<MovieDetails>.fromTMDBSingle(
-            results: differentMovieDetails,
-            statusCode: 200,
-          );
+          final differentApiResponse =
+              ApiResponse<MovieDetailsModel>.fromTMDBSingle(
+                results: differentMovieDetails,
+                statusCode: 200,
+              );
 
           when(
             mockRemoteDataSource.getMovieDetails(movieId: movieId),

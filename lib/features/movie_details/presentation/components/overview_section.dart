@@ -6,7 +6,7 @@ import '../../../../core/theming/styles.dart';
 import '../../data/models/movie_details.dart';
 
 class OverviewSection extends StatelessWidget {
-  final MovieDetails movie;
+  final MovieDetailsModel movie;
 
   const OverviewSection({super.key, required this.movie});
 

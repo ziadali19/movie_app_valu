@@ -1,10 +1,10 @@
-import '../../../movie_details/data/models/movie_details.dart';
+import '../../../data/models/movie_details.dart';
 
 enum MovieDetailsStatus { initial, loading, success, error }
 
 class MovieDetailsState {
   final MovieDetailsStatus status;
-  final MovieDetails? movieDetails;
+  final MovieDetailsModel? movieDetails;
   final String? errorMessage;
   final int? movieId;
 
@@ -17,7 +17,7 @@ class MovieDetailsState {
 
   MovieDetailsState copyWith({
     MovieDetailsStatus? status,
-    MovieDetails? movieDetails,
+    MovieDetailsModel? movieDetails,
     String? errorMessage,
     int? movieId,
   }) {

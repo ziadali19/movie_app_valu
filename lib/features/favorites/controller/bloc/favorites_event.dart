@@ -15,7 +15,7 @@ class AddToFavoritesEvent extends FavoritesEvent {
 
 /// Add a movie details to favorites
 class AddMovieDetailsToFavoritesEvent extends FavoritesEvent {
-  final MovieDetails movieDetails;
+  final MovieDetailsModel movieDetails;
 
   AddMovieDetailsToFavoritesEvent({required this.movieDetails});
 }
@@ -36,7 +36,7 @@ class ToggleFavoriteEvent extends FavoritesEvent {
 
 /// Toggle favorite status from movie details
 class ToggleFavoriteFromDetailsEvent extends FavoritesEvent {
-  final MovieDetails movieDetails;
+  final MovieDetailsModel movieDetails;
 
   ToggleFavoriteFromDetailsEvent({required this.movieDetails});
 }

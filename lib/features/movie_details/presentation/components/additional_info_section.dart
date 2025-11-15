@@ -7,7 +7,7 @@ import '../../data/models/movie_details.dart';
 import 'details_info_row.dart';
 
 class AdditionalInfoSection extends StatelessWidget {
-  final MovieDetails movie;
+  final MovieDetailsModel movie;
 
   const AdditionalInfoSection({super.key, required this.movie});
 

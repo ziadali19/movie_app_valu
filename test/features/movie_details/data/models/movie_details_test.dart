@@ -3,7 +3,7 @@ import 'package:movie_app_valu/features/movie_details/data/models/movie_details.
 
 void main() {
   group('MovieDetails Model Tests', () {
-    late MovieDetails testMovieDetails;
+    late MovieDetailsModel testMovieDetails;
     late Map<String, dynamic> testMovieDetailsJson;
 
     setUp(() {
@@ -51,7 +51,7 @@ void main() {
         'vote_count': 79,
       };
 
-      testMovieDetails = MovieDetails(
+      testMovieDetails = MovieDetailsModel(
         id: 1151334,
         title: 'Eenie Meanie',
         overview:
@@ -63,8 +63,8 @@ void main() {
         voteCount: 79,
         runtime: 106,
         genres: [
-          const Genre(id: 53, name: 'Thriller'),
-          const Genre(id: 28, name: 'Action'),
+          const GenreModel(id: 53, name: 'Thriller'),
+          const GenreModel(id: 28, name: 'Action'),
         ],
         originalLanguage: 'en',
         originalTitle: 'Eenie Meanie',
@@ -79,7 +79,7 @@ void main() {
         imdbId: 'tt15514498',
         originCountry: ['US'],
         productionCompanies: [
-          const ProductionCompany(
+          const ProductionCompanyModel(
             id: 127928,
             logoPath: '/h0rjX5vjW5r8yEnUBStFarjcLT4.png',
             name: '20th Century Studios',
@@ -87,13 +87,13 @@ void main() {
           ),
         ],
         productionCountries: [
-          const ProductionCountry(
+          const ProductionCountryModel(
             iso31661: 'US',
             name: 'United States of America',
           ),
         ],
         spokenLanguages: [
-          const SpokenLanguage(
+          const SpokenLanguageModel(
             englishName: 'English',
             iso6391: 'en',
             name: 'English',
@@ -105,7 +105,7 @@ void main() {
     group('fromJson', () {
       test('should create MovieDetails from JSON correctly', () {
         // Act
-        final movieDetails = MovieDetails.fromJson(testMovieDetailsJson);
+        final movieDetails = MovieDetailsModel.fromJson(testMovieDetailsJson);
 
         // Assert
         expect(movieDetails.id, 1151334);
@@ -161,7 +161,7 @@ void main() {
         };
 
         // Act
-        final movieDetails = MovieDetails.fromJson(minimalJson);
+        final movieDetails = MovieDetailsModel.fromJson(minimalJson);
 
         // Assert
         expect(movieDetails.id, 123);
@@ -327,7 +327,9 @@ void main() {
     group('Equality', () {
       test('should be equal when all properties are the same', () {
         // Arrange
-        final anotherMovieDetails = MovieDetails.fromJson(testMovieDetailsJson);
+        final anotherMovieDetails = MovieDetailsModel.fromJson(
+          testMovieDetailsJson,
+        );
 
         // Assert
         expect(testMovieDetails, equals(anotherMovieDetails));
@@ -356,7 +358,7 @@ void main() {
       final genreJson = {'id': 28, 'name': 'Action'};
 
       // Act
-      final genre = Genre.fromJson(genreJson);
+      final genre = GenreModel.fromJson(genreJson);
 
       // Assert
       expect(genre.id, 28);
@@ -365,7 +367,7 @@ void main() {
 
     test('should convert Genre to JSON correctly', () {
       // Arrange
-      const genre = Genre(id: 28, name: 'Action');
+      const genre = GenreModel(id: 28, name: 'Action');
 
       // Act
       final json = genre.toJson();
@@ -377,9 +379,9 @@ void main() {
 
     test('should handle equality correctly', () {
       // Arrange
-      const genre1 = Genre(id: 28, name: 'Action');
-      const genre2 = Genre(id: 28, name: 'Action');
-      const genre3 = Genre(id: 35, name: 'Comedy');
+      const genre1 = GenreModel(id: 28, name: 'Action');
+      const genre2 = GenreModel(id: 28, name: 'Action');
+      const genre3 = GenreModel(id: 35, name: 'Comedy');
 
       // Assert
       expect(genre1, equals(genre2));
@@ -399,7 +401,7 @@ void main() {
       };
 
       // Act
-      final company = ProductionCompany.fromJson(companyJson);
+      final company = ProductionCompanyModel.fromJson(companyJson);
 
       // Assert
       expect(company.id, 127928);
@@ -418,7 +420,7 @@ void main() {
       };
 
       // Act
-      final company = ProductionCompany.fromJson(companyJson);
+      final company = ProductionCompanyModel.fromJson(companyJson);
 
       // Assert
       expect(company.logoPath, null);
@@ -434,7 +436,7 @@ void main() {
       };
 
       // Act
-      final country = ProductionCountry.fromJson(countryJson);
+      final country = ProductionCountryModel.fromJson(countryJson);
 
       // Assert
       expect(country.iso31661, 'US');
@@ -452,7 +454,7 @@ void main() {
       };
 
       // Act
-      final language = SpokenLanguage.fromJson(languageJson);
+      final language = SpokenLanguageModel.fromJson(languageJson);
 
       // Assert
       expect(language.englishName, 'English');
@@ -462,8 +464,8 @@ void main() {
   });
 }
 
-extension MovieDetailsCopyWith on MovieDetails {
-  MovieDetails copyWith({
+extension MovieDetailsCopyWith on MovieDetailsModel {
+  MovieDetailsModel copyWith({
     int? id,
     String? title,
     String? overview,
@@ -473,7 +475,7 @@ extension MovieDetailsCopyWith on MovieDetails {
     double? voteAverage,
     int? voteCount,
     int? runtime,
-    List<Genre>? genres,
+    List<GenreModel>? genres,
     String? originalLanguage,
     String? originalTitle,
     double? popularity,
@@ -486,11 +488,11 @@ extension MovieDetailsCopyWith on MovieDetails {
     String? homepage,
     String? imdbId,
     List<String>? originCountry,
-    List<ProductionCompany>? productionCompanies,
-    List<ProductionCountry>? productionCountries,
-    List<SpokenLanguage>? spokenLanguages,
+    List<ProductionCompanyModel>? productionCompanies,
+    List<ProductionCountryModel>? productionCountries,
+    List<SpokenLanguageModel>? spokenLanguages,
   }) {
-    return MovieDetails(
+    return MovieDetailsModel(
       id: id ?? this.id,
       title: title ?? this.title,
       overview: overview ?? this.overview,

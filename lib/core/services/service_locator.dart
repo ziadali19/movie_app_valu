@@ -4,7 +4,9 @@ import 'package:movie_app_valu/features/favorites/controller/bloc/favorites_bloc
 import 'package:movie_app_valu/features/favorites/data/local_data_source/favorites_local_data_source.dart';
 import 'package:movie_app_valu/features/favorites/data/repository/favorites_repository.dart';
 import 'package:movie_app_valu/features/main-navigation/controller/bloc/main_navigation_bloc.dart';
-import 'package:movie_app_valu/features/movie_details/controller/bloc/movie_details_bloc.dart';
+import 'package:movie_app_valu/features/movie_details/domain/repository/base_movie_details_repository.dart';
+import 'package:movie_app_valu/features/movie_details/domain/usecases/get_movie_details_usecase.dart';
+import 'package:movie_app_valu/features/movie_details/presentation/controller/bloc/movie_details_bloc.dart';
 import 'package:movie_app_valu/features/movie_details/data/remote_data_source/movie_details_remote_data_source.dart';
 import 'package:movie_app_valu/features/movie_details/data/repository/movie_details_repository.dart';
 import 'package:movie_app_valu/features/movies/controller/bloc/movies_bloc.dart';
@@ -77,7 +79,9 @@ class ServiceLocator {
     getIt.registerLazySingleton<BaseMovieDetailsRepository>(
       () => MovieDetailsRepository(getIt()),
     );
-
+    getIt.registerLazySingleton<GetMovieDetailsUsecase>(
+      () => GetMovieDetailsUsecase(getIt()),
+    );
     // Register MovieDetailsRemoteDataSource as LazySingleton
     getIt.registerLazySingleton<BaseMovieDetailsRemoteDataSource>(
       () => MovieDetailsRemoteDataSource(DioHelper.instance),
